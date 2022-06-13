@@ -1,0 +1,4 @@
+pre-commit:
+  commands:
+    flutter-analyze:
+      run: flutter analyze
