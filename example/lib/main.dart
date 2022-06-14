@@ -1,7 +1,10 @@
 import 'package:example/screens/basic_demo_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 
-void main() {
+Future<void> main() async {
+  await initializeDateFormatting();
+
   runApp(const MyApp());
 }
 

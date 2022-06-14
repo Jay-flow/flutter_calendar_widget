@@ -15,7 +15,7 @@ class _BasicDemoScreenState extends State<BasicDemoScreen> {
       appBar: AppBar(
         title: const Text('Basic demo screen'),
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: FlutterCalendar(),
       ),
     );
