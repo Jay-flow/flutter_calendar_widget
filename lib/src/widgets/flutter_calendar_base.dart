@@ -12,6 +12,7 @@ class FlutterCalendarBase extends StatelessWidget {
   final DateTime lastDay;
   final DayOfWeek startingDayOfWeek;
   final PageController pageController;
+  final OnPageChanged onPageChanged;
   final DayBuilder dayBuilder;
   final DateTimeBuilder dowBuilder;
   final ScrollPhysics? scrollPhysics;
@@ -23,6 +24,7 @@ class FlutterCalendarBase extends StatelessWidget {
     required this.lastDay,
     required this.startingDayOfWeek,
     required this.pageController,
+    required this.onPageChanged,
     required this.dayBuilder,
     required this.dowBuilder,
     this.scrollPhysics,
@@ -84,33 +86,40 @@ class FlutterCalendarBase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
-        controller: pageController,
-        itemCount: getMonthCount(firstDay, lastDay) + 1,
-        itemBuilder: (BuildContext _, int index) {
-          final DateTime baseDay =
-              DateTime(firstDay.year, firstDay.month + index);
+      controller: pageController,
+      onPageChanged: (int index) {
+        final DateTime baseDay =
+            DateTime(firstDay.year, firstDay.month + index);
 
-          final DateTimeRange visibleRange = _daysInMonth(baseDay);
-          final List<DateTime> visibleDays =
-              _daysInRange(visibleRange.start, visibleRange.end);
-          return CalendarPage(
-            visibleDays: visibleDays,
-            dowBuilder: dowBuilder,
-            dayBuilder: (DateTime dateTime) {
-              DateTime baseDay =
-                  DateTime(firstDay.year, firstDay.month + index);
-              bool isSelectedDay = _isSameDay(dateTime);
-              bool isOutSide = dateTime.month != baseDay.month;
+        onPageChanged(index, baseDay);
+      },
+      itemCount: getMonthCount(firstDay, lastDay) + 1,
+      itemBuilder: (BuildContext _, int index) {
+        final DateTime baseDay =
+            DateTime(firstDay.year, firstDay.month + index);
 
-              return dayBuilder(
-                dateTime,
-                DateType(
-                  isSelected: isSelectedDay,
-                  isOutSide: isOutSide,
-                ),
-              );
-            },
-          );
-        });
+        final DateTimeRange visibleRange = _daysInMonth(baseDay);
+        final List<DateTime> visibleDays =
+            _daysInRange(visibleRange.start, visibleRange.end);
+
+        return CalendarPage(
+          visibleDays: visibleDays,
+          dowBuilder: dowBuilder,
+          dayBuilder: (DateTime dateTime) {
+            DateTime baseDay = DateTime(firstDay.year, firstDay.month + index);
+            bool isSelectedDay = _isSameDay(dateTime);
+            bool isOutSide = dateTime.month != baseDay.month;
+
+            return dayBuilder(
+              dateTime,
+              DateType(
+                isSelected: isSelectedDay,
+                isOutSide: isOutSide,
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }
