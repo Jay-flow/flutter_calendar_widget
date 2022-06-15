@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar_widget/src/utils/functions.dart';
 import 'package:intl/intl.dart';
 
 class FlutterCalendarHeader extends StatelessWidget {
@@ -17,7 +18,7 @@ class FlutterCalendarHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final month =
-        DateFormat.yMMMM(getLanguageCode(context)).format(currentPageMonth);
+        DateFormat.yMMMM(Platform.localeName).format(currentPageMonth);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),

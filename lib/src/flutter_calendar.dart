@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/src/models/date_type.dart';
 import 'package:flutter_calendar_widget/src/utils/constants.dart';
@@ -106,7 +108,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
             },
             dowBuilder: (DateTime dateTime) {
               final String weekdayString = DateFormat.E(
-                getLanguageCode(context),
+                Platform.localeName,
               ).format(dateTime);
 
               return Padding(
