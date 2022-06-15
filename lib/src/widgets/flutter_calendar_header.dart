@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar_widget/src/utils/funtions.dart';
+import 'package:flutter_calendar_widget/src/utils/functions.dart';
 import 'package:intl/intl.dart';
 
 class FlutterCalendarHeader extends StatelessWidget {

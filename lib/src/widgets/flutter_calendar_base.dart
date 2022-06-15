@@ -3,7 +3,7 @@ import 'package:flutter_calendar_widget/src/models/date_type.dart';
 
 import '../models/enums.dart';
 import '../types.dart';
-import '../utils/date.dart';
+import '../utils/functions.dart';
 import 'calendar_page.dart';
 
 class FlutterCalendarBase extends StatelessWidget {
@@ -78,11 +78,6 @@ class FlutterCalendarBase extends StatelessWidget {
     );
   }
 
-  bool _isSameDay(DateTime target) =>
-      selectedDay.year == target.year &&
-      selectedDay.month == target.month &&
-      selectedDay.day == target.day;
-
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
@@ -107,7 +102,7 @@ class FlutterCalendarBase extends StatelessWidget {
           dowBuilder: dowBuilder,
           dayBuilder: (DateTime dateTime) {
             DateTime baseDay = DateTime(firstDay.year, firstDay.month + index);
-            bool isSelectedDay = _isSameDay(dateTime);
+            bool isSelectedDay = isSameDay(selectedDay, dateTime);
             bool isOutSide = dateTime.month != baseDay.month;
 
             return dayBuilder(

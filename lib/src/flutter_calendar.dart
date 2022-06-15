@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/src/models/date_type.dart';
 import 'package:flutter_calendar_widget/src/utils/constants.dart';
-import 'package:flutter_calendar_widget/src/utils/date.dart';
-import 'package:flutter_calendar_widget/src/utils/funtions.dart';
+import 'package:flutter_calendar_widget/src/utils/functions.dart';
 import 'package:flutter_calendar_widget/src/widgets/empty.dart';
 import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_base.dart';
 import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_header.dart';

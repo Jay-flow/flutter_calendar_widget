@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 import '../models/enums.dart';
 
 /// Returns a numerical value associated with given `weekday`.
@@ -12,3 +14,9 @@ int getMonthCount(DateTime firstDay, DateTime lastDay) {
 
   return (yearDif * 12 + monthDif);
 }
+
+bool isSameDay(DateTime a, DateTime b) =>
+    a.year == b.year && a.month == b.month && a.day == b.day;
+
+String? getLanguageCode(BuildContext context) =>
+    Localizations.localeOf(context).languageCode;
