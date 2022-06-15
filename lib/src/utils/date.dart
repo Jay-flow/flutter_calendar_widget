@@ -1,13 +1,4 @@
-/// Days of the week that the calendar.
-enum DayOfWeek {
-  mon,
-  tue,
-  wed,
-  thu,
-  fri,
-  sat,
-  sun,
-}
+import '../models/enums.dart';
 
 /// Returns a numerical value associated with given `weekday`.
 ///

@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_calendar_widget/src/models/date_type.dart';
 
-import '../utils/colors.dart';
+import '../models/enums.dart';
+import '../types.dart';
 import '../utils/date.dart';
 import 'calendar_page.dart';
 
 class FlutterCalendarBase extends StatelessWidget {
-  final DateTime? selectedDay;
+  final DateTime selectedDay;
   final DateTime firstDay;
   final DateTime lastDay;
   final DayOfWeek startingDayOfWeek;
   final PageController pageController;
+  final DayBuilder dayBuilder;
+  final DateTimeBuilder dowBuilder;
   final ScrollPhysics? scrollPhysics;
 
   const FlutterCalendarBase({
     Key? key,
-    this.selectedDay,
+    required this.selectedDay,
     required this.firstDay,
     required this.lastDay,
     required this.startingDayOfWeek,
     required this.pageController,
+    required this.dayBuilder,
+    required this.dowBuilder,
     this.scrollPhysics,
   }) : super(key: key);
 
@@ -71,6 +76,11 @@ class FlutterCalendarBase extends StatelessWidget {
     );
   }
 
+  bool _isSameDay(DateTime target) =>
+      selectedDay.year == target.year &&
+      selectedDay.month == target.month &&
+      selectedDay.day == target.day;
+
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
@@ -83,38 +93,23 @@ class FlutterCalendarBase extends StatelessWidget {
           final DateTimeRange visibleRange = _daysInMonth(baseDay);
           final List<DateTime> visibleDays =
               _daysInRange(visibleRange.start, visibleRange.end);
-
           return CalendarPage(
-            dowBuilder: (BuildContext _, DateTime dateTime) {
-              final String weekdayString = DateFormat.E(
-                Localizations.localeOf(context).languageCode,
-              ).format(dateTime);
-
-              return Center(child: Text(weekdayString));
-            },
-            dayBuilder: (BuildContext context, DateTime dateTime) {
+            visibleDays: visibleDays,
+            dowBuilder: dowBuilder,
+            dayBuilder: (DateTime dateTime) {
               DateTime baseDay =
                   DateTime(firstDay.year, firstDay.month + index);
-
+              bool isSelectedDay = _isSameDay(dateTime);
               bool isOutSide = dateTime.month != baseDay.month;
 
-              return GestureDetector(
-                onTap: () => debugPrint('onTap'),
-                child: Container(
-                  margin: const EdgeInsetsDirectional.all(10),
-                  child: Center(
-                    child: Text(
-                      dateTime.day.toString(),
-                      style: TextStyle(
-                        // TODO:: Apply dark theme color
-                        color: isOutSide ? outSideDayColor : dayColor,
-                      ),
-                    ),
-                  ),
+              return dayBuilder(
+                dateTime,
+                DateType(
+                  isSelected: isSelectedDay,
+                  isOutSide: isOutSide,
                 ),
               );
             },
-            visibleDays: visibleDays,
           );
         });
   }

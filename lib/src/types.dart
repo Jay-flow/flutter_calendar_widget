@@ -1,9 +1,13 @@
 import 'package:flutter/widgets.dart';
 
+import 'models/date_type.dart';
+
 typedef FocusedDayBuilder = Widget? Function(
   BuildContext context,
   DateTime day,
   DateTime focusedDay,
 );
 
-typedef DayBuilder = Widget Function(BuildContext context, DateTime day);
+typedef DateTimeBuilder = Widget Function(DateTime dateTime);
+typedef DayBuilder = Widget Function(DateTime dateTime, DateType type);
+typedef DowBuilder = Widget Function(DateTime dateTime, String weekDay);

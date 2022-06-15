@@ -4,8 +4,8 @@ import '../types.dart';
 
 class CalendarPage extends StatelessWidget {
   final List<DateTime> visibleDays;
-  final DayBuilder dayBuilder;
-  final DayBuilder dowBuilder;
+  final DateTimeBuilder dayBuilder;
+  final DateTimeBuilder dowBuilder;
   final TableBorder? tableBorder;
   final Decoration? rowDecoration;
   final Decoration? dowDecoration;
@@ -25,7 +25,7 @@ class CalendarPage extends StatelessWidget {
       decoration: dowDecoration,
       children: List.generate(
         7,
-        (index) => dowBuilder(context, visibleDays[index]),
+        (index) => dowBuilder(visibleDays[index]),
       ).toList(),
     );
   }
@@ -39,7 +39,7 @@ class CalendarPage extends StatelessWidget {
             decoration: rowDecoration,
             children: List.generate(
               7,
-              (id) => dayBuilder(context, visibleDays[index + id]),
+              (id) => dayBuilder(visibleDays[index + id]),
             ),
           ),
         )
