@@ -7,7 +7,7 @@ int getMonthCount(DateTime firstDay, DateTime lastDay) {
   final int yearDif = lastDay.year - firstDay.year;
   final int monthDif = lastDay.month - firstDay.month;
 
-  return (yearDif * 12 + monthDif);
+  return (yearDif * 12 + monthDif).abs();
 }
 
 bool isSameDay(DateTime a, DateTime b) =>
