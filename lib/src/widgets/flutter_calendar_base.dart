@@ -7,9 +7,10 @@ import '../utils/functions.dart';
 import 'calendar_page.dart';
 
 class FlutterCalendarBase extends StatelessWidget {
-  final List<DateTime> selectedDays;
-  final DateTime firstDay;
-  final DateTime lastDay;
+  final DateTime focusedDate;
+  final List<DateTime> selectedDates;
+  final DateTime firstDate;
+  final DateTime lastDate;
   final FlutterCalendarSelectionMode selectionMode;
   final DayOfWeek startingDayOfWeek;
   final PageController pageController;
@@ -20,9 +21,10 @@ class FlutterCalendarBase extends StatelessWidget {
 
   const FlutterCalendarBase({
     Key? key,
-    required this.selectedDays,
-    required this.firstDay,
-    required this.lastDay,
+    required this.focusedDate,
+    required this.selectedDates,
+    required this.firstDate,
+    required this.lastDate,
     required this.selectionMode,
     required this.startingDayOfWeek,
     required this.pageController,
@@ -32,14 +34,14 @@ class FlutterCalendarBase extends StatelessWidget {
     this.scrollPhysics,
   }) : super(key: key);
 
-  DateTime _firstDayOfMonth(DateTime currentDateTime) =>
+  DateTime _firstDateOfMonth(DateTime currentDateTime) =>
       DateTime(currentDateTime.year, currentDateTime.month, 1);
 
-  int _getDaysBefore(DateTime firstDayOfMonth) =>
-      (firstDayOfMonth.weekday + 7 - getWeekdayNumber(startingDayOfWeek)) % 7;
+  int _getDaysBefore(DateTime firstDateOfMonth) =>
+      (firstDateOfMonth.weekday + 7 - getWeekdayNumber(startingDayOfWeek)) % 7;
 
   DateTimeRange _daysInMonth(DateTime currentDateTime) {
-    final firstDayOfMonth = _firstDayOfMonth(currentDateTime);
+    final firstDayOfMonth = _firstDateOfMonth(currentDateTime);
     final daysBefore = _getDaysBefore(firstDayOfMonth);
     final firstToDisplay = firstDayOfMonth.subtract(Duration(days: daysBefore));
 
@@ -58,9 +60,9 @@ class FlutterCalendarBase extends StatelessWidget {
     return date.subtract(const Duration(days: 1));
   }
 
-  int _getDaysAfter(DateTime lastDay) {
+  int _getDaysAfter(DateTime lastDate) {
     int invertedStartingWeekday = 8 - getWeekdayNumber(startingDayOfWeek);
-    int daysAfter = 7 - ((lastDay.weekday + invertedStartingWeekday) % 7);
+    int daysAfter = 7 - ((lastDate.weekday + invertedStartingWeekday) % 7);
 
     if (daysAfter == 7) {
       return 0;
@@ -79,11 +81,7 @@ class FlutterCalendarBase extends StatelessWidget {
   }
 
   bool _isSelectedDay(DateTime day) {
-    if (selectionMode == FlutterCalendarSelectionMode.single) {
-      return isSameDay(selectedDays.first, day);
-    }
-
-    return false;
+    return shouldFindSameDayFromList(selectedDates, day);
   }
 
   @override
@@ -93,14 +91,14 @@ class FlutterCalendarBase extends StatelessWidget {
       physics: scrollPhysics,
       onPageChanged: (int index) {
         final DateTime baseDay =
-            DateTime(firstDay.year, firstDay.month + index);
+            DateTime(firstDate.year, firstDate.month + index);
 
         onPageChanged(index, baseDay);
       },
-      itemCount: getMonthCount(firstDay, lastDay) + 1,
+      itemCount: getMonthCount(firstDate, lastDate) + 1,
       itemBuilder: (BuildContext _, int index) {
         final DateTime baseDay =
-            DateTime(firstDay.year, firstDay.month + index);
+            DateTime(firstDate.year, firstDate.month + index);
 
         final DateTimeRange visibleRange = _daysInMonth(baseDay);
         final List<DateTime> visibleDays =
@@ -110,13 +108,18 @@ class FlutterCalendarBase extends StatelessWidget {
           visibleDays: visibleDays,
           dowBuilder: dowBuilder,
           dayBuilder: (DateTime dateTime) {
-            DateTime baseDay = DateTime(firstDay.year, firstDay.month + index);
+            DateTime baseDay =
+                DateTime(firstDate.year, firstDate.month + index);
 
             bool isOutSide = dateTime.month != baseDay.month;
 
             return dayBuilder(
               dateTime,
               DateType(
+                isFocused: isSameDay(
+                  dateTime,
+                  focusedDate,
+                ),
                 isSelected: _isSelectedDay(dateTime),
                 isOutSide: isOutSide,
               ),
