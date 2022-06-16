@@ -80,8 +80,20 @@ class FlutterCalendarBase extends StatelessWidget {
     );
   }
 
-  bool _isSelectedDay(DateTime day) {
-    return shouldFindSameDayFromList(selectedDates, day);
+  bool _isSelectedDay(DateTime date) {
+    return shouldFindSameDayFromList(selectedDates, date);
+  }
+
+  bool _isRange(DateTime date) {
+    if (selectionMode == FlutterCalendarSelectionMode.range &&
+        selectedDates.length > 1) {
+      return (selectedDates.first.isBefore(date) &&
+              selectedDates.last.isAfter(date)) ||
+          (selectedDates.first.isAfter(date) &&
+              selectedDates.last.isBefore(date));
+    }
+
+    return false;
   }
 
   @override
@@ -120,6 +132,7 @@ class FlutterCalendarBase extends StatelessWidget {
                   dateTime,
                   focusedDate,
                 ),
+                isRange: _isRange(dateTime),
                 isSelected: _isSelectedDay(dateTime),
                 isOutSide: isOutSide,
               ),

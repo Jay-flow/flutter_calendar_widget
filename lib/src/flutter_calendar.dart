@@ -34,7 +34,7 @@ class FlutterCalendar extends StatefulWidget {
     this.selectedDates,
     this.firstDate,
     this.lastDate,
-    this.selectionMode = FlutterCalendarSelectionMode.single,
+    this.selectionMode = FlutterCalendarSelectionMode.range,
     this.startingDayOfWeek = DayOfWeek.sun,
     required this.onDayPressed,
     this.onDayLongPressed,
@@ -60,6 +60,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   @override
   void initState() {
     initializeDateFormatting();
+
     _focusedDate = widget.focusedDate ?? today;
     _selectedDates = widget.selectedDates ?? [];
     _currentPageMonth = _focusedDate;
@@ -67,7 +68,6 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
         DateTime(_focusedDate.year, _focusedDate.month - 3, _focusedDate.day);
     _lastDate = widget.lastDate ??
         DateTime(_focusedDate.year, _focusedDate.month + 3, _focusedDate.day);
-
     _pageController = widget.pageController ??
         PageController(
           initialPage: getMonthCount(_firstDate, _focusedDate),
@@ -87,12 +87,16 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   }
 
   void _updateRageDay(DateTime day) {
-    if (_selectedDates.length < 2) {
-      _selectedDates.add(day);
-    } else {
+    if (_isTapSameDate(day) || _selectedDates.length == 2) {
       _selectedDates = [day];
+    } else {
+      _selectedDates.add(day);
     }
   }
+
+  bool _isTapSameDate(date) =>
+      _selectedDates.isNotEmpty &&
+      shouldFindSameDayFromList(_selectedDates, date);
 
   Color _getDayTextColor(DateType type) {
     // TODO:: Apply dark theme color
@@ -132,7 +136,11 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
         color: Colors.black,
       );
     }
-
+    if (type.isRange) {
+      return Container(
+        color: Colors.grey[300],
+      );
+    }
     if (type.isFocused) {
       return Container(
         decoration: BoxDecoration(
