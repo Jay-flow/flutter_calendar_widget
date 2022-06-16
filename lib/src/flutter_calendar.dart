@@ -1,17 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 import 'package:flutter_calendar_widget/src/models/date_type.dart';
 import 'package:flutter_calendar_widget/src/types.dart';
 import 'package:flutter_calendar_widget/src/utils/constants.dart';
+import 'package:flutter_calendar_widget/src/utils/errors.dart';
 import 'package:flutter_calendar_widget/src/utils/functions.dart';
 import 'package:flutter_calendar_widget/src/widgets/empty.dart';
 import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_base.dart';
 import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_header.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-
-import 'models/enums.dart';
 
 class FlutterCalendar extends StatefulWidget {
   final DateTime? focusedDate;
@@ -20,8 +20,9 @@ class FlutterCalendar extends StatefulWidget {
   final DateTime? lastDate;
   final FlutterCalendarSelectionMode selectionMode;
   final DayOfWeek startingDayOfWeek;
-  final DateTimeCallback onDayPressed;
+  final DateTimeCallback? onDayPressed;
   final DateTimeCallback? onDayLongPressed;
+  final OnRageDate? onRageDate;
   final ScrollPhysics? scrollPhysics;
   final PageController? pageController;
   final OnPageChanged? onPageChanged;
@@ -34,10 +35,11 @@ class FlutterCalendar extends StatefulWidget {
     this.selectedDates,
     this.firstDate,
     this.lastDate,
-    this.selectionMode = FlutterCalendarSelectionMode.range,
+    this.selectionMode = FlutterCalendarSelectionMode.single,
     this.startingDayOfWeek = DayOfWeek.sun,
     required this.onDayPressed,
     this.onDayLongPressed,
+    this.onRageDate,
     this.scrollPhysics,
     this.pageController,
     this.onPageChanged,
@@ -125,9 +127,32 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   }
 
   void _returnDays() {
-    if (widget.selectionMode == FlutterCalendarSelectionMode.single) {
-      widget.onDayPressed(_selectedDates.first);
+    if (_selectedDates.length > 1) {
+      _selectedDates.sort((a, b) => a.compareTo(b));
     }
+    if (widget.onDayPressed != null) {
+      widget.onDayPressed!(_selectedDates.first);
+    }
+    if (widget.onRageDate != null) {
+      if (widget.selectionMode != FlutterCalendarSelectionMode.range) {
+        throw ValueException(onRageDateUsageErrorMessage);
+      }
+
+      widget.onRageDate!(_getCalendarDateRange());
+    }
+  }
+
+  CalendarDateRange _getCalendarDateRange() {
+    CalendarDateRange dateRange = CalendarDateRange(start: null, end: null);
+
+    if (_selectedDates.length == 1) {
+      dateRange.start = _selectedDates[0];
+    } else {
+      dateRange.start = _selectedDates[0];
+      dateRange.end = _selectedDates[1];
+    }
+
+    return dateRange;
   }
 
   Widget _buildDate(DateType type) {
