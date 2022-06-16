@@ -24,12 +24,6 @@ class _SingleDemoScreenState extends State<RangeDemoScreen> {
               '[onRageDate] start: ${dateRange.start}, end ${dateRange.end}',
             );
           },
-          onDayPressed: (DateTime day) {
-            logger.d('[onDayPressed] $day');
-          },
-          onDayLongPressed: (DateTime day) {
-            logger.d('[onDayLongPressed] $day');
-          },
         ),
       ),
     );

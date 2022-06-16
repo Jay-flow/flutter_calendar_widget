@@ -14,5 +14,6 @@ typedef DateTimeBuilder = Widget Function(DateTime dateTime);
 typedef DateTimeCallback = void Function(DateTime dateTime);
 typedef OnPageChanged = void Function(int index, DateTime dateTime);
 typedef OnRageDate = void Function(CalendarDateRange dateTimeRange);
+typedef OnMultipleDates = void Function(List<DateTime> dates);
 typedef DayBuilder = Widget Function(DateTime dateTime, DateType type);
 typedef DowBuilder = Widget Function(DateTime dateTime, String weekDay);

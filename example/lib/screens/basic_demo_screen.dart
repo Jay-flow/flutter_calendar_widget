@@ -1,3 +1,4 @@
+import 'package:example/screens/multiple_demo_screen.dart';
 import 'package:example/screens/range_demo_screen.dart';
 import 'package:example/screens/single_demo_screen.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,16 @@ class _BasicDemoScreenState extends State<BasicDemoScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const RangeDemoScreen(),
+                ),
+              ),
+            ),
+            _buildListTile(
+              title: 'Multiple demo screen',
+              subtitle: 'A demo of the widget that selects multiple dates.',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MultipleDemoScreen(),
                 ),
               ),
             ),

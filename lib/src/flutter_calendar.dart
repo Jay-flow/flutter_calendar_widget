@@ -23,6 +23,7 @@ class FlutterCalendar extends StatefulWidget {
   final DateTimeCallback? onDayPressed;
   final DateTimeCallback? onDayLongPressed;
   final OnRageDate? onRageDate;
+  final OnMultipleDates? onMultipleDates;
   final ScrollPhysics? scrollPhysics;
   final PageController? pageController;
   final OnPageChanged? onPageChanged;
@@ -37,9 +38,10 @@ class FlutterCalendar extends StatefulWidget {
     this.lastDate,
     this.selectionMode = FlutterCalendarSelectionMode.single,
     this.startingDayOfWeek = DayOfWeek.sun,
-    required this.onDayPressed,
+    this.onDayPressed,
     this.onDayLongPressed,
     this.onRageDate,
+    this.onMultipleDates,
     this.scrollPhysics,
     this.pageController,
     this.onPageChanged,
@@ -84,6 +86,9 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
         _selectedDates = [day];
       } else if (widget.selectionMode == FlutterCalendarSelectionMode.range) {
         _updateRageDay(day);
+      } else if (widget.selectionMode ==
+          FlutterCalendarSelectionMode.multiple) {
+        _selectedDates.add(day);
       }
     });
   }
@@ -139,6 +144,9 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
       }
 
       widget.onRageDate!(_getCalendarDateRange());
+    }
+    if (widget.onMultipleDates != null) {
+      widget.onMultipleDates!(_selectedDates);
     }
   }
 

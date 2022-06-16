@@ -12,4 +12,5 @@ enum DayOfWeek {
 enum FlutterCalendarSelectionMode {
   range,
   single,
+  multiple,
 }
