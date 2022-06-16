@@ -58,12 +58,14 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
 
     _selectedDay = widget.selectedDay ?? today;
     _currentPageMonth = _selectedDay;
-    _firstDay = widget.firstDay ?? firstDay;
-    _lastDay = widget.lastDay ?? lastDay;
+    _firstDay = widget.firstDay ??
+        DateTime(_selectedDay.year, _selectedDay.month - 3, _selectedDay.day);
+    _lastDay = widget.lastDay ??
+        DateTime(_selectedDay.year, _selectedDay.month + 3, _selectedDay.day);
 
     _pageController = widget.pageController ??
         PageController(
-          initialPage: getMonthCount(firstDay, _selectedDay),
+          initialPage: getMonthCount(_firstDay, _selectedDay),
         );
 
     super.initState();
