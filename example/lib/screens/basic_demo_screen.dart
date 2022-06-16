@@ -4,30 +4,25 @@ import 'package:example/screens/range_demo_screen.dart';
 import 'package:example/screens/single_demo_screen.dart';
 import 'package:flutter/material.dart';
 
-class BasicDemoScreen extends StatefulWidget {
+class BasicDemoScreen extends StatelessWidget {
   const BasicDemoScreen({Key? key}) : super(key: key);
 
-  @override
-  State<BasicDemoScreen> createState() => _BasicDemoScreenState();
-}
+  Widget _buildListTile({
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return Card(
+      child: ListTile(
+        leading: const FlutterLogo(size: 72.0),
+        title: Text(title),
+        subtitle: Text(subtitle),
+        isThreeLine: true,
+        onTap: onTap,
+      ),
+    );
+  }
 
-Widget _buildListTile({
-  required String title,
-  required String subtitle,
-  required VoidCallback onTap,
-}) {
-  return Card(
-    child: ListTile(
-      leading: const FlutterLogo(size: 72.0),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      isThreeLine: true,
-      onTap: onTap,
-    ),
-  );
-}
-
-class _BasicDemoScreenState extends State<BasicDemoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

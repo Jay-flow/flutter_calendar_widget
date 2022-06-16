@@ -2,14 +2,9 @@ import 'package:example/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 
-class RangeDemoScreen extends StatefulWidget {
+class RangeDemoScreen extends StatelessWidget {
   const RangeDemoScreen({Key? key}) : super(key: key);
 
-  @override
-  State<RangeDemoScreen> createState() => _SingleDemoScreenState();
-}
-
-class _SingleDemoScreenState extends State<RangeDemoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
