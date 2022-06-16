@@ -17,6 +17,8 @@ class FlutterCalendar extends StatefulWidget {
   final DateTime? selectedDay;
   final DateTime? firstDay;
   final DateTime? lastDay;
+  final FlutterCalendarSelectionMode selectionMode;
+  final DayOfWeek startingDayOfWeek;
   final DateTimeCallback onDayPressed;
   final DateTimeCallback? onDayLongPressed;
   final ScrollPhysics? scrollPhysics;
@@ -30,6 +32,8 @@ class FlutterCalendar extends StatefulWidget {
     this.selectedDay,
     this.firstDay,
     this.lastDay,
+    this.selectionMode = FlutterCalendarSelectionMode.single,
+    this.startingDayOfWeek = DayOfWeek.sun,
     required this.onDayPressed,
     this.onDayLongPressed,
     this.scrollPhysics,
@@ -44,37 +48,43 @@ class FlutterCalendar extends StatefulWidget {
 }
 
 class _FlutterCalendarState extends State<FlutterCalendar> {
-  late DateTime _selectedDay;
+  late List<DateTime> _selectedDays;
   late DateTime _currentPageMonth;
   late final DateTime _firstDay;
   late final DateTime _lastDay;
   late final PageController _pageController;
 
-  final DayOfWeek _startingDayOfWeek = DayOfWeek.sun;
-
   @override
   void initState() {
     initializeDateFormatting();
 
-    _selectedDay = widget.selectedDay ?? today;
-    _currentPageMonth = _selectedDay;
+    _selectedDays =
+        widget.selectedDay != null ? [widget.selectedDay!] : [today];
+
+    DateTime firstSelectedDay = _selectedDays[0];
+
+    _currentPageMonth = firstSelectedDay;
     _firstDay = widget.firstDay ??
-        DateTime(_selectedDay.year, _selectedDay.month - 3, _selectedDay.day);
+        DateTime(firstSelectedDay.year, firstSelectedDay.month - 3,
+            firstSelectedDay.day);
     _lastDay = widget.lastDay ??
-        DateTime(_selectedDay.year, _selectedDay.month + 3, _selectedDay.day);
+        DateTime(firstSelectedDay.year, firstSelectedDay.month + 3,
+            firstSelectedDay.day);
 
     _pageController = widget.pageController ??
         PageController(
-          initialPage: getMonthCount(_firstDay, _selectedDay),
+          initialPage: getMonthCount(_firstDay, firstSelectedDay),
         );
 
     super.initState();
   }
 
   void _updateSelectedDay(DateTime day) {
-    setState(() {
-      _selectedDay = day;
-    });
+    if (widget.selectionMode == FlutterCalendarSelectionMode.single) {
+      setState(() {
+        _selectedDays = [day];
+      });
+    }
   }
 
   Color _getDayTextColor(DateType type) {
@@ -114,10 +124,11 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
         ),
         Flexible(
           child: FlutterCalendarBase(
-            selectedDay: _selectedDay,
+            selectedDays: _selectedDays,
             firstDay: _firstDay,
             lastDay: _lastDay,
-            startingDayOfWeek: _startingDayOfWeek,
+            selectionMode: widget.selectionMode,
+            startingDayOfWeek: widget.startingDayOfWeek,
             pageController: _pageController,
             onPageChanged: (int index, DateTime currentDateTime) {
               setState(() {

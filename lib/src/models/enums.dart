@@ -8,3 +8,8 @@ enum DayOfWeek {
   sat,
   sun,
 }
+
+enum FlutterCalendarSelectionMode {
+  range,
+  single,
+}

@@ -7,9 +7,10 @@ import '../utils/functions.dart';
 import 'calendar_page.dart';
 
 class FlutterCalendarBase extends StatelessWidget {
-  final DateTime selectedDay;
+  final List<DateTime> selectedDays;
   final DateTime firstDay;
   final DateTime lastDay;
+  final FlutterCalendarSelectionMode selectionMode;
   final DayOfWeek startingDayOfWeek;
   final PageController pageController;
   final OnPageChanged onPageChanged;
@@ -19,9 +20,10 @@ class FlutterCalendarBase extends StatelessWidget {
 
   const FlutterCalendarBase({
     Key? key,
-    required this.selectedDay,
+    required this.selectedDays,
     required this.firstDay,
     required this.lastDay,
+    required this.selectionMode,
     required this.startingDayOfWeek,
     required this.pageController,
     required this.onPageChanged,
@@ -30,13 +32,11 @@ class FlutterCalendarBase extends StatelessWidget {
     this.scrollPhysics,
   }) : super(key: key);
 
-  final DayOfWeek _startingDayOfWeek = DayOfWeek.sun;
-
   DateTime _firstDayOfMonth(DateTime currentDateTime) =>
       DateTime(currentDateTime.year, currentDateTime.month, 1);
 
   int _getDaysBefore(DateTime firstDayOfMonth) =>
-      (firstDayOfMonth.weekday + 7 - getWeekdayNumber(_startingDayOfWeek)) % 7;
+      (firstDayOfMonth.weekday + 7 - getWeekdayNumber(startingDayOfWeek)) % 7;
 
   DateTimeRange _daysInMonth(DateTime currentDateTime) {
     final firstDayOfMonth = _firstDayOfMonth(currentDateTime);
@@ -59,7 +59,7 @@ class FlutterCalendarBase extends StatelessWidget {
   }
 
   int _getDaysAfter(DateTime lastDay) {
-    int invertedStartingWeekday = 8 - getWeekdayNumber(_startingDayOfWeek);
+    int invertedStartingWeekday = 8 - getWeekdayNumber(startingDayOfWeek);
     int daysAfter = 7 - ((lastDay.weekday + invertedStartingWeekday) % 7);
 
     if (daysAfter == 7) {
@@ -76,6 +76,14 @@ class FlutterCalendarBase extends StatelessWidget {
       dayCount,
       (index) => DateTime(first.year, first.month, first.day + index),
     );
+  }
+
+  bool _isSelectedDay(DateTime day) {
+    if (selectionMode == FlutterCalendarSelectionMode.single) {
+      return isSameDay(selectedDays.first, day);
+    }
+
+    return false;
   }
 
   @override
@@ -103,13 +111,13 @@ class FlutterCalendarBase extends StatelessWidget {
           dowBuilder: dowBuilder,
           dayBuilder: (DateTime dateTime) {
             DateTime baseDay = DateTime(firstDay.year, firstDay.month + index);
-            bool isSelectedDay = isSameDay(selectedDay, dateTime);
+
             bool isOutSide = dateTime.month != baseDay.month;
 
             return dayBuilder(
               dateTime,
               DateType(
-                isSelected: isSelectedDay,
+                isSelected: _isSelectedDay(dateTime),
                 isOutSide: isOutSide,
               ),
             );
