@@ -1,3 +1,4 @@
+import 'package:example/screens/custom_demo_screen.dart';
 import 'package:example/screens/multiple_demo_screen.dart';
 import 'package:example/screens/range_demo_screen.dart';
 import 'package:example/screens/single_demo_screen.dart';
@@ -63,6 +64,16 @@ class _BasicDemoScreenState extends State<BasicDemoScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const MultipleDemoScreen(),
+                ),
+              ),
+            ),
+            _buildListTile(
+              title: 'Custom demo screen',
+              subtitle: 'A demo of the widget that selects multiple dates.',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CustomDemoScreen(),
                 ),
               ),
             ),

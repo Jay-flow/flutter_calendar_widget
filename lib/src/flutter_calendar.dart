@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
+import 'package:flutter_calendar_widget/src/classes/default_calender_builder.dart';
 import 'package:flutter_calendar_widget/src/models/date_type.dart';
 import 'package:flutter_calendar_widget/src/types.dart';
 import 'package:flutter_calendar_widget/src/utils/constants.dart';
 import 'package:flutter_calendar_widget/src/utils/errors.dart';
 import 'package:flutter_calendar_widget/src/utils/functions.dart';
-import 'package:flutter_calendar_widget/src/widgets/empty.dart';
 import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_base.dart';
 import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_header.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -20,6 +20,7 @@ class FlutterCalendar extends StatefulWidget {
   final DateTime? lastDate;
   final FlutterCalendarSelectionMode selectionMode;
   final DayOfWeek startingDayOfWeek;
+  final CalenderBuilder? calenderBuilder;
   final DateTimeCallback? onDayPressed;
   final DateTimeCallback? onDayLongPressed;
   final OnRageDate? onRageDate;
@@ -38,6 +39,7 @@ class FlutterCalendar extends StatefulWidget {
     this.lastDate,
     this.selectionMode = FlutterCalendarSelectionMode.single,
     this.startingDayOfWeek = DayOfWeek.sun,
+    this.calenderBuilder,
     this.onDayPressed,
     this.onDayLongPressed,
     this.onRageDate,
@@ -60,6 +62,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   late final DateTime _firstDate;
   late final DateTime _lastDate;
   late final PageController _pageController;
+  late final CalenderBuilder _calenderBuilder;
 
   @override
   void initState() {
@@ -68,6 +71,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
     _focusedDate = widget.focusedDate ?? today;
     _selectedDates = widget.selectedDates ?? [];
     _currentPageMonth = _focusedDate;
+    _calenderBuilder = widget.calenderBuilder ?? DefaultCalenderBuilder();
     _firstDate = widget.firstDate ??
         DateTime(_focusedDate.year, _focusedDate.month - 3, _focusedDate.day);
     _lastDate = widget.lastDate ??
@@ -104,18 +108,6 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   bool _isTapSameDate(date) =>
       _selectedDates.isNotEmpty &&
       shouldFindSameDayFromList(_selectedDates, date);
-
-  Color _getDayTextColor(DateType type) {
-    // TODO:: Apply dark theme color
-    if (type.isSelected) {
-      return Colors.white;
-    }
-    if (type.isOutSide) {
-      return Colors.grey;
-    }
-
-    return Colors.black;
-  }
 
   void _onLeftChevronTap() {
     _pageController.previousPage(
@@ -161,28 +153,6 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
     }
 
     return dateRange;
-  }
-
-  Widget _buildDate(DateType type) {
-    if (type.isSelected) {
-      return Container(
-        color: Colors.black,
-      );
-    }
-    if (type.isRange) {
-      return Container(
-        color: Colors.grey[300],
-      );
-    }
-    if (type.isFocused) {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(width: 2.0, color: Colors.black),
-        ),
-      );
-    }
-
-    return const Empty();
   }
 
   @override
@@ -238,22 +208,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
                 },
                 child: widget.dayBuilder != null
                     ? widget.dayBuilder!(dateTime, type)
-                    : SizedBox(
-                        width: 30,
-                        height: 50,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            _buildDate(type),
-                            Text(
-                              dateTime.day.toString(),
-                              style: TextStyle(
-                                color: _getDayTextColor(type),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    : _calenderBuilder.build(dateTime, type),
               );
             },
           ),
