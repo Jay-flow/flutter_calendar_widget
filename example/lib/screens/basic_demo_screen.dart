@@ -1,3 +1,4 @@
+import 'package:example/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 
@@ -15,8 +16,15 @@ class _BasicDemoScreenState extends State<BasicDemoScreen> {
       appBar: AppBar(
         title: const Text('Basic demo screen'),
       ),
-      body: const SafeArea(
-        child: FlutterCalendar(),
+      body: SafeArea(
+        child: FlutterCalendar(
+          onDayPressed: (DateTime day) {
+            logger.d('onDayPressed $day');
+          },
+          onDayLongPressed: (DateTime day) {
+            logger.d('onDayLongPressed $day');
+          },
+        ),
       ),
     );
   }

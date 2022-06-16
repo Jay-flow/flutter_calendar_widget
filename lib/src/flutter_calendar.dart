@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/src/models/date_type.dart';
+import 'package:flutter_calendar_widget/src/types.dart';
 import 'package:flutter_calendar_widget/src/utils/constants.dart';
 import 'package:flutter_calendar_widget/src/utils/functions.dart';
 import 'package:flutter_calendar_widget/src/widgets/empty.dart';
 import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_base.dart';
 import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_header.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import 'models/enums.dart';
@@ -15,16 +17,26 @@ class FlutterCalendar extends StatefulWidget {
   final DateTime? selectedDay;
   final DateTime? firstDay;
   final DateTime? lastDay;
+  final DateTimeCallback onDayPressed;
+  final DateTimeCallback? onDayLongPressed;
   final ScrollPhysics? scrollPhysics;
   final PageController? pageController;
+  final OnPageChanged? onPageChanged;
+  final DowBuilder? dowBuilder;
+  final DayBuilder? dayBuilder;
 
   const FlutterCalendar({
     Key? key,
     this.selectedDay,
     this.firstDay,
     this.lastDay,
+    required this.onDayPressed,
+    this.onDayLongPressed,
     this.scrollPhysics,
     this.pageController,
+    this.onPageChanged,
+    this.dowBuilder,
+    this.dayBuilder,
   }) : super(key: key);
 
   @override
@@ -42,15 +54,19 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
 
   @override
   void initState() {
-    super.initState();
+    initializeDateFormatting();
+
     _selectedDay = widget.selectedDay ?? today;
     _currentPageMonth = _selectedDay;
     _firstDay = widget.firstDay ?? firstDay;
     _lastDay = widget.lastDay ?? lastDay;
 
-    _pageController = PageController(
-      initialPage: getMonthCount(firstDay, _selectedDay),
-    );
+    _pageController = widget.pageController ??
+        PageController(
+          initialPage: getMonthCount(firstDay, _selectedDay),
+        );
+
+    super.initState();
   }
 
   void _updateSelectedDay(DateTime day) {
@@ -101,15 +117,23 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
             lastDay: _lastDay,
             startingDayOfWeek: _startingDayOfWeek,
             pageController: _pageController,
-            onPageChanged: (int _, DateTime currentDateTime) {
+            onPageChanged: (int index, DateTime currentDateTime) {
               setState(() {
                 _currentPageMonth = currentDateTime;
               });
+
+              if (widget.onPageChanged != null) {
+                widget.onPageChanged!(index, currentDateTime);
+              }
             },
             dowBuilder: (DateTime dateTime) {
               final String weekdayString = DateFormat.E(
                 Platform.localeName,
               ).format(dateTime);
+
+              if (widget.dowBuilder != null) {
+                return widget.dowBuilder!(dateTime, weekdayString);
+              }
 
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
@@ -119,27 +143,37 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
             dayBuilder: (DateTime dateTime, DateType type) {
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => _updateSelectedDay(dateTime),
-                child: SizedBox(
-                  width: 30,
-                  height: 50,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      type.isSelected
-                          ? Container(
-                              color: Colors.black,
-                            )
-                          : const Empty(),
-                      Text(
-                        dateTime.day.toString(),
-                        style: TextStyle(
-                          color: _getDayTextColor(type),
+                onTapDown: (_) => _updateSelectedDay(dateTime),
+                onTap: () {
+                  widget.onDayPressed(dateTime);
+                },
+                onLongPress: () {
+                  if (widget.onDayLongPressed != null) {
+                    widget.onDayLongPressed!(dateTime);
+                  }
+                },
+                child: widget.dayBuilder != null
+                    ? widget.dayBuilder!(dateTime, type)
+                    : SizedBox(
+                        width: 30,
+                        height: 50,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            type.isSelected
+                                ? Container(
+                                    color: Colors.black,
+                                  )
+                                : const Empty(),
+                            Text(
+                              dateTime.day.toString(),
+                              style: TextStyle(
+                                color: _getDayTextColor(type),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
               );
             },
           ),

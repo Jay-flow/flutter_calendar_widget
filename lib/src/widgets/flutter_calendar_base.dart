@@ -82,6 +82,7 @@ class FlutterCalendarBase extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageView.builder(
       controller: pageController,
+      physics: scrollPhysics,
       onPageChanged: (int index) {
         final DateTime baseDay =
             DateTime(firstDay.year, firstDay.month + index);
