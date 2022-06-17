@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 import 'package:flutter_calendar_widget/src/classes/default_calender_builder.dart';
-import 'package:flutter_calendar_widget/src/models/date_type.dart';
 import 'package:flutter_calendar_widget/src/types.dart';
 import 'package:flutter_calendar_widget/src/utils/constants.dart';
 import 'package:flutter_calendar_widget/src/utils/errors.dart';
@@ -28,8 +27,6 @@ class FlutterCalendar extends StatefulWidget {
   final ScrollPhysics? scrollPhysics;
   final PageController? pageController;
   final OnPageChanged? onPageChanged;
-  final DowBuilder? dowBuilder;
-  final DayBuilder? dayBuilder;
 
   const FlutterCalendar({
     Key? key,
@@ -47,8 +44,6 @@ class FlutterCalendar extends StatefulWidget {
     this.scrollPhysics,
     this.pageController,
     this.onPageChanged,
-    this.dowBuilder,
-    this.dayBuilder,
   }) : super(key: key);
 
   @override
@@ -187,14 +182,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
                 Platform.localeName,
               ).format(dateTime);
 
-              if (widget.dowBuilder != null) {
-                return widget.dowBuilder!(dateTime, weekdayString);
-              }
-
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Center(child: Text(weekdayString)),
-              );
+              return _calenderBuilder.buildDayOfWeek(dateTime, weekdayString);
             },
             dayBuilder: (DateTime dateTime, DateType type) {
               return GestureDetector(
@@ -206,9 +194,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
                     widget.onDayLongPressed!(dateTime);
                   }
                 },
-                child: widget.dayBuilder != null
-                    ? widget.dayBuilder!(dateTime, type)
-                    : _calenderBuilder.build(dateTime, type),
+                child: _calenderBuilder.buildDay(dateTime, type),
               );
             },
           ),

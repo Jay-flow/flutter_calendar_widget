@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 
-import 'models/date_type.dart';
-
 typedef FocusedDayBuilder = Widget? Function(
   BuildContext context,
   DateTime day,

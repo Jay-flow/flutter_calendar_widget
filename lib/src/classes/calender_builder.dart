@@ -12,7 +12,7 @@ abstract class CalenderBuilder {
     this.defaultHeight = 50,
   });
 
-  Widget build(DateTime dateTime, DateType type) {
+  Widget buildDay(DateTime dateTime, DateType type) {
     if (type.isSelected) {
       return buildSelectedDay(dateTime, type);
     }
@@ -24,6 +24,13 @@ abstract class CalenderBuilder {
     }
 
     return buildDefaultDay(dateTime, type);
+  }
+
+  Widget buildDayOfWeek(DateTime dateTime, String weekdayString) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Center(child: Text(weekdayString)),
+    );
   }
 
   Widget buildSelectedDay(DateTime dateTime, DateType type) {
