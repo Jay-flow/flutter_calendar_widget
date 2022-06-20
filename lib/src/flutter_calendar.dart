@@ -27,6 +27,8 @@ class FlutterCalendar extends StatefulWidget {
   final ScrollPhysics? scrollPhysics;
   final PageController? pageController;
   final OnPageChanged? onPageChanged;
+  final double daysOfWeekHeight;
+  final double daysRowHeight;
 
   const FlutterCalendar({
     Key? key,
@@ -44,6 +46,8 @@ class FlutterCalendar extends StatefulWidget {
     this.scrollPhysics,
     this.pageController,
     this.onPageChanged,
+    this.daysOfWeekHeight = 30,
+    this.daysRowHeight = 52,
   }) : super(key: key);
 
   @override
@@ -168,6 +172,8 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
             selectionMode: widget.selectionMode,
             startingDayOfWeek: widget.startingDayOfWeek,
             pageController: _pageController,
+            daysOfWeekHeight: widget.daysOfWeekHeight,
+            daysRowHeight: widget.daysRowHeight,
             onPageChanged: (int index, DateTime currentDateTime) {
               setState(() {
                 _currentPageMonth = currentDateTime;
@@ -185,16 +191,23 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
               return _calenderBuilder.buildDayOfWeek(dateTime, weekdayString);
             },
             dayBuilder: (DateTime dateTime, DateType type) {
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTapDown: (_) => _updateSelectedDay(dateTime),
-                onTap: () => _returnDays(),
-                onLongPress: () {
-                  if (widget.onDayLongPressed != null) {
-                    widget.onDayLongPressed!(dateTime);
-                  }
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTapDown: (_) => _updateSelectedDay(dateTime),
+                    onTap: () => _returnDays(),
+                    onLongPress: () {
+                      if (widget.onDayLongPressed != null) {
+                        widget.onDayLongPressed!(dateTime);
+                      }
+                    },
+                    child: _calenderBuilder.build(
+                      dateTime,
+                      type,
+                    ),
+                  );
                 },
-                child: _calenderBuilder.buildDay(dateTime, type),
               );
             },
           ),

@@ -18,6 +18,8 @@ class FlutterCalendarBase extends StatelessWidget {
   final DayBuilder dayBuilder;
   final DateTimeBuilder dowBuilder;
   final ScrollPhysics? scrollPhysics;
+  final double daysOfWeekHeight;
+  final double daysRowHeight;
 
   const FlutterCalendarBase({
     Key? key,
@@ -31,6 +33,8 @@ class FlutterCalendarBase extends StatelessWidget {
     required this.onPageChanged,
     required this.dayBuilder,
     required this.dowBuilder,
+    required this.daysOfWeekHeight,
+    required this.daysRowHeight,
     this.scrollPhysics,
   }) : super(key: key);
 
@@ -80,13 +84,35 @@ class FlutterCalendarBase extends StatelessWidget {
     );
   }
 
+  bool _isRangeSelectionMode() =>
+      selectionMode == FlutterCalendarSelectionMode.range;
+
   bool _isSelectedDay(DateTime date) {
+    if (_isRangeSelectionMode()) {
+      return false;
+    }
+
     return shouldFindSameDayFromList(selectedDates, date);
   }
 
+  bool _isRangeStart(DateTime date) {
+    if (!_isRangeSelectionMode()) {
+      return false;
+    }
+
+    return findIndexFromList(selectedDates, date) == 0;
+  }
+
+  bool _isRangeEnd(DateTime date) {
+    if (!_isRangeSelectionMode()) {
+      return false;
+    }
+
+    return findIndexFromList(selectedDates, date) == 1;
+  }
+
   bool _isRange(DateTime date) {
-    if (selectionMode == FlutterCalendarSelectionMode.range &&
-        selectedDates.length > 1) {
+    if (_isRangeSelectionMode() && selectedDates.length > 1) {
       return (selectedDates.first.isBefore(date) &&
               selectedDates.last.isAfter(date)) ||
           (selectedDates.first.isAfter(date) &&
@@ -94,6 +120,14 @@ class FlutterCalendarBase extends StatelessWidget {
     }
 
     return false;
+  }
+
+  bool _isWithinRange(DateTime date) {
+    if (!_isRangeSelectionMode() || selectedDates.length < 2) {
+      return false;
+    }
+
+    return _isRangeStart(date) || _isRangeEnd(date) || _isRange(date);
   }
 
   @override
@@ -118,23 +152,34 @@ class FlutterCalendarBase extends StatelessWidget {
 
         return CalendarPage(
           visibleDays: visibleDays,
-          dowBuilder: dowBuilder,
+          dowBuilder: (DateTime dateTime) {
+            return SizedBox(
+              height: daysOfWeekHeight,
+              child: dowBuilder(dateTime),
+            );
+          },
           dayBuilder: (DateTime dateTime) {
             DateTime baseDay =
                 DateTime(firstDate.year, firstDate.month + index);
 
             bool isOutSide = dateTime.month != baseDay.month;
 
-            return dayBuilder(
-              dateTime,
-              DateType(
-                isFocused: isSameDay(
-                  dateTime,
-                  focusedDate,
+            return SizedBox(
+              height: daysRowHeight,
+              child: dayBuilder(
+                dateTime,
+                DateType(
+                  isFocused: isSameDay(
+                    dateTime,
+                    focusedDate,
+                  ),
+                  isRange: _isRange(dateTime),
+                  isRangeStart: _isRangeStart(dateTime),
+                  isRangeEnd: _isRangeEnd(dateTime),
+                  isSelected: _isSelectedDay(dateTime),
+                  isWithinRange: _isWithinRange(dateTime),
+                  isOutSide: isOutSide,
                 ),
-                isRange: _isRange(dateTime),
-                isSelected: _isSelectedDay(dateTime),
-                isOutSide: isOutSide,
               ),
             );
           },

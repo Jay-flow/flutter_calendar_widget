@@ -5,8 +5,6 @@ class CustomCalenderBuilder extends CalenderBuilder {
   @override
   Widget buildSelectedDay(DateTime dateTime, DateType type) {
     return SizedBox(
-      width: defaultWidth,
-      height: defaultHeight,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -27,8 +25,6 @@ class CustomCalenderBuilder extends CalenderBuilder {
   @override
   Widget buildRangeDay(DateTime dateTime, DateType type) {
     return SizedBox(
-      width: defaultWidth,
-      height: defaultHeight,
       child: Container(
         alignment: Alignment.center,
         color: Colors.greenAccent,

@@ -28,3 +28,6 @@ bool shouldFindSameDayFromList(
 
   return true;
 }
+
+int findIndexFromList(List<DateTime> dateTimeList, DateTime dateTimeToFind) =>
+    dateTimeList.indexWhere((element) => isSameDay(element, dateTimeToFind));
