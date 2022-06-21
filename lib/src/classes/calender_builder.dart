@@ -10,20 +10,19 @@ abstract class CalenderBuilder {
   Widget build(
     DateTime dateTime,
     DateType type,
+    List events,
   ) {
-    return Padding(
-      padding: style.daysRowVerticalPadding,
-      child: type.isWithinRange
-          ? Stack(
-              alignment: Alignment.center,
-              children: [
-                LayoutBuilder(builder: (context, constraints) {
-                  return buildRangeLine(type, constraints);
-                }),
-                buildDay(dateTime, type),
-              ],
-            )
-          : buildDay(dateTime, type),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        type.isWithinRange
+            ? LayoutBuilder(builder: (context, constraints) {
+                return buildRangeLine(type, constraints);
+              })
+            : const Empty(),
+        buildDay(dateTime, type),
+        events.isNotEmpty ? buildEvents(events) : const Empty(),
+      ],
     );
   }
 
@@ -82,6 +81,29 @@ abstract class CalenderBuilder {
     }
 
     return buildDefaultDay(dateTime, type);
+  }
+
+  Widget buildEvents(List events) {
+    return Positioned(
+      bottom: 8,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: events
+            .take(5)
+            .map(
+              (e) => Container(
+                height: 5,
+                width: 5,
+                margin: const EdgeInsets.symmetric(horizontal: 0.5),
+                decoration: const BoxDecoration(
+                  color: Colors.deepOrangeAccent,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            )
+            .toList(),
+      ),
+    );
   }
 
   Widget buildDayOfWeek(DateTime dateTime, String weekdayString) {

@@ -1,4 +1,5 @@
 import 'package:example/screens/custom_demo_screen.dart';
+import 'package:example/screens/event_demo_screen.dart';
 import 'package:example/screens/multiple_demo_screen.dart';
 import 'package:example/screens/range_demo_screen.dart';
 import 'package:example/screens/single_demo_screen.dart';
@@ -69,6 +70,16 @@ class BasicDemoScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const CustomDemoScreen(),
+                ),
+              ),
+            ),
+            _buildListTile(
+              title: 'Event demo screen',
+              subtitle: 'A demo of the widget that event dates.',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EventDemoScreen(),
                 ),
               ),
             ),

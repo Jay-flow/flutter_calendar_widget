@@ -130,6 +130,12 @@ class FlutterCalendarBase extends StatelessWidget {
     return _isRangeStart(date) || _isRangeEnd(date) || _isRange(date);
   }
 
+  // int _getRowCount(List<DateTime> visibleDays) => visibleDays.length ~/ 7;
+  //
+  // double _getPageHeight(int rowCount) {
+  //   return daysOfWeekHeight + rowCount * daysRowHeight;
+  // }
+
   @override
   Widget build(BuildContext context) {
     return PageView.builder(

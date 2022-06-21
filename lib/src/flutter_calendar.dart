@@ -29,6 +29,7 @@ class FlutterCalendar extends StatefulWidget {
   final OnPageChanged? onPageChanged;
   final double daysOfWeekHeight;
   final double daysRowHeight;
+  final EventList? events;
 
   const FlutterCalendar({
     Key? key,
@@ -38,6 +39,7 @@ class FlutterCalendar extends StatefulWidget {
     this.lastDate,
     this.selectionMode = FlutterCalendarSelectionMode.single,
     this.startingDayOfWeek = DayOfWeek.sun,
+    this.events,
     this.calenderBuilder,
     this.onDayPressed,
     this.onDayLongPressed,
@@ -205,6 +207,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
                     child: _calenderBuilder.build(
                       dateTime,
                       type,
+                      widget.events?.get(dateTime) ?? [],
                     ),
                   );
                 },
