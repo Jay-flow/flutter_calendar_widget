@@ -1,12 +1,8 @@
-import 'package:example/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 
-class Event {
-  final String title;
-
-  const Event(this.title);
-}
+import '../models/event.dart';
+import '../utils.dart';
 
 class EventDemoScreen extends StatefulWidget {
   const EventDemoScreen({Key? key}) : super(key: key);
@@ -18,51 +14,53 @@ class EventDemoScreen extends StatefulWidget {
 class _EventDemoScreenState extends State<EventDemoScreen> {
   List<Event> _selectedEvents = [];
 
-  EventList<Event> _getEvents() {
-    DateTime now = DateTime.now();
-
-    return EventList(
-      events: {
-        now: [
-          const Event('Event 1'),
-          const Event('Event 2'),
-          const Event('Event 3'),
-          const Event('Event 4'),
-          const Event('Event 5'),
-          const Event('Event 6'),
-        ],
-        DateTime(now.year, now.month, 3): [
-          const Event('Event 1'),
-          const Event('Event 2'),
-          const Event('Event 3'),
-        ],
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final events = _getEvents();
+    EventList<Event> events = getEventList();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Single demo screen'),
+        title: const Text('Event demo screen'),
       ),
       body: SafeArea(
-        child: FlutterCalendar(
-          selectionMode: FlutterCalendarSelectionMode.single,
-          focusedDate: DateTime.now(),
-          events: events,
-          onDayPressed: (DateTime day) {
-            setState(() {
-              _selectedEvents = events.get(day);
-            });
-
-            logger.d(_selectedEvents);
-          },
-          onDayLongPressed: (DateTime day) {
-            logger.d('[onDayLongPressed] $day');
-          },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FlutterCalendar(
+              selectionMode: FlutterCalendarSelectionMode.single,
+              focusedDate: DateTime.now(),
+              events: events,
+              onDayPressed: (DateTime day) {
+                setState(() {
+                  _selectedEvents = events.get(day);
+                });
+              },
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: _selectedEvents
+                      .map(
+                        (event) => Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.red, width: 1),
+                          ),
+                          child: Text(
+                            event.title,
+                            style: const TextStyle(
+                              fontSize: 30,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

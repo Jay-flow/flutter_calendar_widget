@@ -12,17 +12,20 @@ abstract class CalenderBuilder {
     DateType type,
     List events,
   ) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        type.isWithinRange
-            ? LayoutBuilder(builder: (context, constraints) {
-                return buildRangeLine(type, constraints);
-              })
-            : const Empty(),
-        buildDay(dateTime, type),
-        events.isNotEmpty ? buildEvents(events) : const Empty(),
-      ],
+    return Padding(
+      padding: style.daysRowVerticalPadding,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          type.isWithinRange
+              ? LayoutBuilder(builder: (context, constraints) {
+                  return buildRangeLine(type, constraints);
+                })
+              : const Empty(),
+          buildDay(dateTime, type),
+          events.isNotEmpty ? buildEvents(events) : const Empty(),
+        ],
+      ),
     );
   }
 
@@ -85,11 +88,11 @@ abstract class CalenderBuilder {
 
   Widget buildEvents(List events) {
     return Positioned(
-      bottom: 8,
+      bottom: 6,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: events
-            .take(5)
+            .take(4)
             .map(
               (e) => Container(
                 height: 5,
@@ -164,7 +167,7 @@ abstract class CalenderBuilder {
       children: [
         Container(
           decoration: BoxDecoration(
-            border: Border.all(width: 2.0, color: Colors.black),
+            border: Border.all(width: 1.0, color: Colors.black),
             shape: BoxShape.circle,
           ),
         ),
