@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/src/models/date_type.dart';
+import 'package:flutter_calendar_widget/src/widgets/expandable_page_view.dart';
+import 'package:flutter_calendar_widget/src/widgets/size_reporting_widget.dart';
 
 import '../models/enums.dart';
 import '../types.dart';
 import '../utils/functions.dart';
 import 'calendar_page.dart';
 
-class FlutterCalendarBase extends StatelessWidget {
+class FlutterCalendarBase extends StatefulWidget {
   final DateTime focusedDate;
   final List<DateTime> selectedDates;
   final DateTime firstDate;
@@ -38,11 +40,26 @@ class FlutterCalendarBase extends StatelessWidget {
     this.scrollPhysics,
   }) : super(key: key);
 
+  @override
+  State<FlutterCalendarBase> createState() => _FlutterCalendarBaseState();
+}
+
+class _FlutterCalendarBaseState extends State<FlutterCalendarBase> {
+  late final List<double> _pageHeights = _preparePageHeights();
+
+  List<double> _preparePageHeights() => List.filled(_getItemCount(), 0);
+
+  void _updatePageHeight(int index, double height) =>
+      setState(() => _pageHeights[index] = height);
+
   DateTime _firstDateOfMonth(DateTime currentDateTime) =>
       DateTime(currentDateTime.year, currentDateTime.month, 1);
 
   int _getDaysBefore(DateTime firstDateOfMonth) =>
-      (firstDateOfMonth.weekday + 7 - getWeekdayNumber(startingDayOfWeek)) % 7;
+      (firstDateOfMonth.weekday +
+          7 -
+          getWeekdayNumber(widget.startingDayOfWeek)) %
+      7;
 
   DateTimeRange _daysInMonth(DateTime currentDateTime) {
     final firstDayOfMonth = _firstDateOfMonth(currentDateTime);
@@ -65,7 +82,8 @@ class FlutterCalendarBase extends StatelessWidget {
   }
 
   int _getDaysAfter(DateTime lastDate) {
-    int invertedStartingWeekday = 8 - getWeekdayNumber(startingDayOfWeek);
+    int invertedStartingWeekday =
+        8 - getWeekdayNumber(widget.startingDayOfWeek);
     int daysAfter = 7 - ((lastDate.weekday + invertedStartingWeekday) % 7);
 
     if (daysAfter == 7) {
@@ -85,14 +103,14 @@ class FlutterCalendarBase extends StatelessWidget {
   }
 
   bool _isRangeSelectionMode() =>
-      selectionMode == FlutterCalendarSelectionMode.range;
+      widget.selectionMode == FlutterCalendarSelectionMode.range;
 
   bool _isSelectedDay(DateTime date) {
     if (_isRangeSelectionMode()) {
       return false;
     }
 
-    return shouldFindSameDayFromList(selectedDates, date);
+    return shouldFindSameDayFromList(widget.selectedDates, date);
   }
 
   bool _isRangeStart(DateTime date) {
@@ -100,7 +118,7 @@ class FlutterCalendarBase extends StatelessWidget {
       return false;
     }
 
-    return findIndexFromList(selectedDates, date) == 0;
+    return findIndexFromList(widget.selectedDates, date) == 0;
   }
 
   bool _isRangeEnd(DateTime date) {
@@ -108,89 +126,96 @@ class FlutterCalendarBase extends StatelessWidget {
       return false;
     }
 
-    return findIndexFromList(selectedDates, date) == 1;
+    return findIndexFromList(widget.selectedDates, date) == 1;
   }
 
   bool _isRange(DateTime date) {
-    if (_isRangeSelectionMode() && selectedDates.length > 1) {
-      return (selectedDates.first.isBefore(date) &&
-              selectedDates.last.isAfter(date)) ||
-          (selectedDates.first.isAfter(date) &&
-              selectedDates.last.isBefore(date));
+    if (_isRangeSelectionMode() && widget.selectedDates.length > 1) {
+      return (widget.selectedDates.first.isBefore(date) &&
+              widget.selectedDates.last.isAfter(date)) ||
+          (widget.selectedDates.first.isAfter(date) &&
+              widget.selectedDates.last.isBefore(date));
     }
 
     return false;
   }
 
   bool _isWithinRange(DateTime date) {
-    if (!_isRangeSelectionMode() || selectedDates.length < 2) {
+    if (!_isRangeSelectionMode() || widget.selectedDates.length < 2) {
       return false;
     }
 
     return _isRangeStart(date) || _isRangeEnd(date) || _isRange(date);
   }
 
-  // int _getRowCount(List<DateTime> visibleDays) => visibleDays.length ~/ 7;
-  //
-  // double _getPageHeight(int rowCount) {
-  //   return daysOfWeekHeight + rowCount * daysRowHeight;
-  // }
+  int _getItemCount() => getMonthCount(widget.firstDate, widget.lastDate) + 1;
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      controller: pageController,
-      physics: scrollPhysics,
-      onPageChanged: (int index) {
-        final DateTime baseDay =
-            DateTime(firstDate.year, firstDate.month + index);
+    return ExpandablePageView(
+      pageController: widget.pageController,
+      pageHeights: _pageHeights,
+      child: PageView.builder(
+        controller: widget.pageController,
+        physics: widget.scrollPhysics,
+        onPageChanged: (int index) {
+          final DateTime baseDay =
+              DateTime(widget.firstDate.year, widget.firstDate.month + index);
 
-        onPageChanged(index, baseDay);
-      },
-      itemCount: getMonthCount(firstDate, lastDate) + 1,
-      itemBuilder: (BuildContext _, int index) {
-        final DateTime baseDay =
-            DateTime(firstDate.year, firstDate.month + index);
+          widget.onPageChanged(index, baseDay);
+        },
+        itemCount: _getItemCount(),
+        itemBuilder: (BuildContext _, int index) {
+          final DateTime baseDay =
+              DateTime(widget.firstDate.year, widget.firstDate.month + index);
 
-        final DateTimeRange visibleRange = _daysInMonth(baseDay);
-        final List<DateTime> visibleDays =
-            _daysInRange(visibleRange.start, visibleRange.end);
+          final DateTimeRange visibleRange = _daysInMonth(baseDay);
+          final List<DateTime> visibleDays =
+              _daysInRange(visibleRange.start, visibleRange.end);
 
-        return CalendarPage(
-          visibleDays: visibleDays,
-          dowBuilder: (DateTime dateTime) {
-            return SizedBox(
-              height: daysOfWeekHeight,
-              child: dowBuilder(dateTime),
-            );
-          },
-          dayBuilder: (DateTime dateTime) {
-            DateTime baseDay =
-                DateTime(firstDate.year, firstDate.month + index);
+          return OverflowBox(
+            minHeight: 0,
+            maxHeight: double.infinity,
+            child: SizeReportingWidget(
+              onSizeChange: (size) => _updatePageHeight(index, size.height),
+              child: CalendarPage(
+                visibleDays: visibleDays,
+                dowBuilder: (DateTime dateTime) {
+                  return SizedBox(
+                    height: widget.daysOfWeekHeight,
+                    child: widget.dowBuilder(dateTime),
+                  );
+                },
+                dayBuilder: (DateTime dateTime) {
+                  DateTime baseDay = DateTime(
+                      widget.firstDate.year, widget.firstDate.month + index);
 
-            bool isOutSide = dateTime.month != baseDay.month;
+                  bool isOutSide = dateTime.month != baseDay.month;
 
-            return SizedBox(
-              height: daysRowHeight,
-              child: dayBuilder(
-                dateTime,
-                DateType(
-                  isFocused: isSameDay(
-                    dateTime,
-                    focusedDate,
-                  ),
-                  isRange: _isRange(dateTime),
-                  isRangeStart: _isRangeStart(dateTime),
-                  isRangeEnd: _isRangeEnd(dateTime),
-                  isSelected: _isSelectedDay(dateTime),
-                  isWithinRange: _isWithinRange(dateTime),
-                  isOutSide: isOutSide,
-                ),
+                  return SizedBox(
+                    height: widget.daysRowHeight,
+                    child: widget.dayBuilder(
+                      dateTime,
+                      DateType(
+                        isFocused: isSameDay(
+                          dateTime,
+                          widget.focusedDate,
+                        ),
+                        isRange: _isRange(dateTime),
+                        isRangeStart: _isRangeStart(dateTime),
+                        isRangeEnd: _isRangeEnd(dateTime),
+                        isSelected: _isSelectedDay(dateTime),
+                        isWithinRange: _isWithinRange(dateTime),
+                        isOutSide: isOutSide,
+                      ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        );
-      },
+            ),
+          );
+        },
+      ),
     );
   }
 }

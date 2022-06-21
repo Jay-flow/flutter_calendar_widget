@@ -165,55 +165,53 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
           onLeftChevronTap: _onLeftChevronTap,
           onRightChevronTap: _onRightChevronTap,
         ),
-        Flexible(
-          child: FlutterCalendarBase(
-            focusedDate: _focusedDate,
-            selectedDates: _selectedDates,
-            firstDate: _firstDate,
-            lastDate: _lastDate,
-            selectionMode: widget.selectionMode,
-            startingDayOfWeek: widget.startingDayOfWeek,
-            pageController: _pageController,
-            daysOfWeekHeight: widget.daysOfWeekHeight,
-            daysRowHeight: widget.daysRowHeight,
-            onPageChanged: (int index, DateTime currentDateTime) {
-              setState(() {
-                _currentPageMonth = currentDateTime;
-              });
+        FlutterCalendarBase(
+          focusedDate: _focusedDate,
+          selectedDates: _selectedDates,
+          firstDate: _firstDate,
+          lastDate: _lastDate,
+          selectionMode: widget.selectionMode,
+          startingDayOfWeek: widget.startingDayOfWeek,
+          pageController: _pageController,
+          daysOfWeekHeight: widget.daysOfWeekHeight,
+          daysRowHeight: widget.daysRowHeight,
+          onPageChanged: (int index, DateTime currentDateTime) {
+            setState(() {
+              _currentPageMonth = currentDateTime;
+            });
 
-              if (widget.onPageChanged != null) {
-                widget.onPageChanged!(index, currentDateTime);
-              }
-            },
-            dowBuilder: (DateTime dateTime) {
-              final String weekdayString = DateFormat.E(
-                Platform.localeName,
-              ).format(dateTime);
+            if (widget.onPageChanged != null) {
+              widget.onPageChanged!(index, currentDateTime);
+            }
+          },
+          dowBuilder: (DateTime dateTime) {
+            final String weekdayString = DateFormat.E(
+              Platform.localeName,
+            ).format(dateTime);
 
-              return _calenderBuilder.buildDayOfWeek(dateTime, weekdayString);
-            },
-            dayBuilder: (DateTime dateTime, DateType type) {
-              return LayoutBuilder(
-                builder: (context, constraints) {
-                  return GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTapDown: (_) => _updateSelectedDay(dateTime),
-                    onTap: () => _returnDays(),
-                    onLongPress: () {
-                      if (widget.onDayLongPressed != null) {
-                        widget.onDayLongPressed!(dateTime);
-                      }
-                    },
-                    child: _calenderBuilder.build(
-                      dateTime,
-                      type,
-                      widget.events?.get(dateTime) ?? [],
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+            return _calenderBuilder.buildDayOfWeek(dateTime, weekdayString);
+          },
+          dayBuilder: (DateTime dateTime, DateType type) {
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTapDown: (_) => _updateSelectedDay(dateTime),
+                  onTap: () => _returnDays(),
+                  onLongPress: () {
+                    if (widget.onDayLongPressed != null) {
+                      widget.onDayLongPressed!(dateTime);
+                    }
+                  },
+                  child: _calenderBuilder.build(
+                    dateTime,
+                    type,
+                    widget.events?.get(dateTime) ?? [],
+                  ),
+                );
+              },
+            );
+          },
         ),
       ],
     );
