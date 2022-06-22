@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar_widget/src/utils/functions.dart' as f
+    show isDarkMode;
 
 import '../../flutter_calendar_widget.dart';
 import '../models/calender_style.dart';
@@ -6,6 +8,7 @@ import '../widgets/empty.dart';
 
 abstract class CalenderBuilder {
   final CalenderStyle style = CalenderStyle();
+  bool get isDarkMode => f.isDarkMode();
 
   Widget build(
     DateTime dateTime,
@@ -31,39 +34,51 @@ abstract class CalenderBuilder {
 
   Widget buildRangeLine(DateType type, BoxConstraints constraints) {
     if (type.isRangeStart) {
-      return Align(
-        alignment: Alignment.centerRight,
-        child: Container(
-          width: constraints.maxWidth / 2,
-          decoration: BoxDecoration(
-            border: Border.all(width: 0, color: style.rangeLineColor),
-            color: style.rangeLineColor,
-          ),
-        ),
-      );
+      return buildRangeStartLine(constraints);
     }
     if (type.isRangeEnd) {
-      return Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
-          width: constraints.maxWidth / 2,
-          decoration: BoxDecoration(
-            border: Border.all(width: 0, color: style.rangeLineColor),
-            color: style.rangeLineColor,
-          ),
-        ),
-      );
+      return buildRangeEndLine(constraints);
     }
     if (type.isRange) {
-      return Container(
+      return buildRangeDayLine(constraints);
+    }
+
+    return const Empty();
+  }
+
+  Widget buildRangeStartLine(BoxConstraints constraints) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        width: constraints.maxWidth / 2,
         decoration: BoxDecoration(
           border: Border.all(width: 0, color: style.rangeLineColor),
           color: style.rangeLineColor,
         ),
-      );
-    }
+      ),
+    );
+  }
 
-    return const Empty();
+  Widget buildRangeEndLine(BoxConstraints constraints) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        width: constraints.maxWidth / 2,
+        decoration: BoxDecoration(
+          border: Border.all(width: 0, color: style.rangeLineColor),
+          color: style.rangeLineColor,
+        ),
+      ),
+    );
+  }
+
+  Widget buildRangeDayLine(BoxConstraints constraints) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 0, color: style.rangeLineColor),
+        color: style.rangeLineColor,
+      ),
+    );
   }
 
   Widget buildDay(DateTime dateTime, DateType type) {
@@ -195,7 +210,6 @@ abstract class CalenderBuilder {
   }
 
   Color _getDayTextColor(DateType type) {
-    // TODO:: Apply dark theme color
     if (type.isSelected || type.isRangeStart || type.isRangeEnd) {
       return Colors.white;
     }

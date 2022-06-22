@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+
 import '../models/enums.dart';
 import 'package:collection/collection.dart';
 
@@ -13,6 +16,12 @@ int getMonthCount(DateTime firstDay, DateTime lastDay) {
 
 bool isSameDay(DateTime a, DateTime b) =>
     a.year == b.year && a.month == b.month && a.day == b.day;
+
+bool isDarkMode() {
+  Brightness brightness = SchedulerBinding.instance.window.platformBrightness;
+
+  return brightness == Brightness.dark;
+}
 
 bool shouldFindSameDayFromList(
   List<DateTime> dateTimeList,

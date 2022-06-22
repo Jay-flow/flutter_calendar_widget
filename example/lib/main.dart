@@ -11,12 +11,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
+      themeMode: ThemeMode.system,
       title: 'flutter_calendar_widget demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const BasicDemoScreen(),
+      home: BasicDemoScreen(),
     );
   }
 }
