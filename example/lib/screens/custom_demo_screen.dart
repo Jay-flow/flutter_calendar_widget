@@ -63,7 +63,7 @@ class CustomDemoScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: FlutterCalendar(
-          selectionMode: FlutterCalendarSelectionMode.range,
+          selectionMode: CalendarSelectionMode.range,
           calenderBuilder: CustomCalenderBuilder(),
         ),
       ),

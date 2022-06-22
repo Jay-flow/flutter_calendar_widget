@@ -9,10 +9,11 @@ enum DayOfWeek {
   sun,
 }
 
-enum FlutterCalendarSelectionMode {
-  range,
+enum CalendarSelectionMode {
   single,
   multiple,
+  range,
+  multipleRange,
 }
 
 enum CalendarTheme {

@@ -13,14 +13,13 @@ class FlutterCalendarBase extends StatefulWidget {
   final List<DateTime> selectedDates;
   final DateTime minDate;
   final DateTime maxDate;
-  final FlutterCalendarSelectionMode selectionMode;
+  final CalendarSelectionMode selectionMode;
   final DayOfWeek startingDayOfWeek;
   final PageController pageController;
   final OnPageChanged onPageChanged;
   final DayBuilder dayBuilder;
   final DateTimeBuilder dowBuilder;
   final ScrollPhysics? scrollPhysics;
-  final double daysOfWeekHeight;
   final double daysRowHeight;
 
   const FlutterCalendarBase({
@@ -35,7 +34,6 @@ class FlutterCalendarBase extends StatefulWidget {
     required this.onPageChanged,
     required this.dayBuilder,
     required this.dowBuilder,
-    required this.daysOfWeekHeight,
     required this.daysRowHeight,
     this.scrollPhysics,
   }) : super(key: key);
@@ -103,7 +101,7 @@ class _FlutterCalendarBaseState extends State<FlutterCalendarBase> {
   }
 
   bool _isRangeSelectionMode() =>
-      widget.selectionMode == FlutterCalendarSelectionMode.range;
+      widget.selectionMode == CalendarSelectionMode.range;
 
   bool _isSelectedDay(DateTime date) {
     if (_isRangeSelectionMode()) {
@@ -181,10 +179,7 @@ class _FlutterCalendarBaseState extends State<FlutterCalendarBase> {
               child: CalendarPage(
                 visibleDays: visibleDays,
                 dowBuilder: (DateTime dateTime) {
-                  return SizedBox(
-                    height: widget.daysOfWeekHeight,
-                    child: widget.dowBuilder(dateTime),
-                  );
+                  return widget.dowBuilder(dateTime);
                 },
                 dayBuilder: (DateTime dateTime) {
                   DateTime baseDay = DateTime(

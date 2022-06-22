@@ -14,7 +14,7 @@ class RangeDemoScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: FlutterCalendar(
-          selectionMode: FlutterCalendarSelectionMode.range,
+          selectionMode: CalendarSelectionMode.range,
           onRageDate: (CalendarDateRange dateRange) {
             logger.i(
               '[onRageDate] start: ${dateRange.start}, end ${dateRange.end}',

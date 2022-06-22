@@ -14,7 +14,7 @@ class MultipleDemoScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: FlutterCalendar(
-          selectionMode: FlutterCalendarSelectionMode.multiple,
+          selectionMode: CalendarSelectionMode.multiple,
           onMultipleDates: (List<DateTime> dates) {
             for (var date in dates) {
               logger.i('[onMultipleDates] $date');

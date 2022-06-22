@@ -27,7 +27,7 @@ class _EventDemoScreenState extends State<EventDemoScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FlutterCalendar(
-              selectionMode: FlutterCalendarSelectionMode.single,
+              selectionMode: CalendarSelectionMode.single,
               focusedDate: DateTime.now(),
               events: events,
               onDayPressed: (DateTime day) {

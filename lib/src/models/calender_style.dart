@@ -11,7 +11,12 @@ class CalenderStyle {
 
   final TextStyle headerTextStyle;
 
+  final EdgeInsetsGeometry? headerMargin;
+  final EdgeInsetsGeometry? dayOfWeekMargin;
+  final EdgeInsetsGeometry? calenderMargin;
+
   final EdgeInsets headerPadding;
+  final EdgeInsets? calenderPadding;
   final EdgeInsets daysRowPadding;
   final EdgeInsets dayOfWeekPadding;
   final EdgeInsets eventMargin;
@@ -20,6 +25,7 @@ class CalenderStyle {
   final Alignment dayOfWeekAlignment;
   final Alignment eventAlignment;
 
+  final double daysRowHeight;
   final double focusedDayWidth;
   final double eventSize;
   final double? markerSize;
@@ -40,7 +46,11 @@ class CalenderStyle {
     this.headerTextStyle = const TextStyle(
       fontSize: 17.0,
     ),
+    this.headerMargin,
+    this.dayOfWeekMargin,
+    this.calenderMargin,
     this.headerPadding = const EdgeInsets.all(8.0),
+    this.calenderPadding,
     this.daysRowPadding = const EdgeInsets.symmetric(vertical: 5),
     this.dayOfWeekPadding = const EdgeInsets.only(bottom: 10),
     this.eventMargin = const EdgeInsets.symmetric(
@@ -50,6 +60,7 @@ class CalenderStyle {
     this.dayAlignment = Alignment.center,
     this.dayOfWeekAlignment = Alignment.center,
     this.eventAlignment = Alignment.bottomCenter,
+    this.daysRowHeight = 52,
     this.focusedDayWidth = 1,
     this.eventSize = 5,
     this.markerSize,

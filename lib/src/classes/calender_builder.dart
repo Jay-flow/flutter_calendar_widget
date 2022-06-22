@@ -22,7 +22,8 @@ abstract class CalenderBuilder {
   ) {
     final month = DateFormat.yMMMM(Platform.localeName).format(dateTime);
 
-    return Padding(
+    return Container(
+      margin: style.headerMargin,
       padding: style.headerPadding,
       child: Row(
         children: [
@@ -168,7 +169,8 @@ abstract class CalenderBuilder {
   }
 
   Widget buildDayOfWeek(DateTime dateTime, String weekdayString) {
-    return Padding(
+    return Container(
+      margin: style.dayOfWeekMargin,
       padding: style.dayOfWeekPadding,
       child: Align(
         alignment: style.dayOfWeekAlignment,

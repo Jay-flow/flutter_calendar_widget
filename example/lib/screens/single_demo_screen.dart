@@ -14,7 +14,7 @@ class SingleDemoScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: FlutterCalendar(
-          selectionMode: FlutterCalendarSelectionMode.single,
+          selectionMode: CalendarSelectionMode.single,
           onDayPressed: (DateTime day) {
             logger.d('[onDayPressed] $day');
           },
