@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar_widget/src/utils/functions.dart' as f
-    show isDarkMode;
+import 'package:flutter_calendar_widget/src/models/calender_text_style.dart';
 
 import '../../flutter_calendar_widget.dart';
 import '../models/calender_style.dart';
 import '../widgets/empty.dart';
 
 abstract class CalenderBuilder {
-  final CalenderStyle style = CalenderStyle();
-  bool get isDarkMode => f.isDarkMode();
+  final CalenderStyle style;
+  final CalenderTextStyle textStyle;
+
+  const CalenderBuilder({
+    this.textStyle = const CalenderTextStyle(),
+    this.style = const CalenderStyle(),
+  });
 
   Widget build(
     DateTime dateTime,
@@ -16,9 +20,9 @@ abstract class CalenderBuilder {
     List events,
   ) {
     return Padding(
-      padding: style.daysRowVerticalPadding,
+      padding: style.daysRowPadding,
       child: Stack(
-        alignment: Alignment.center,
+        alignment: style.dayAlignment,
         children: [
           type.isWithinRange
               ? LayoutBuilder(builder: (context, constraints) {
@@ -52,7 +56,10 @@ abstract class CalenderBuilder {
       child: Container(
         width: constraints.maxWidth / 2,
         decoration: BoxDecoration(
-          border: Border.all(width: 0, color: style.rangeLineColor),
+          border: Border.all(
+            width: 0,
+            color: style.rangeLineColor,
+          ),
           color: style.rangeLineColor,
         ),
       ),
@@ -83,147 +90,182 @@ abstract class CalenderBuilder {
 
   Widget buildDay(DateTime dateTime, DateType type) {
     if (type.isSelected) {
-      return buildSelectedDay(dateTime, type);
+      return buildSelectedDay(dateTime);
     }
     if (type.isRange) {
-      return buildRangeDay(dateTime, type);
+      return buildRangeDay(dateTime);
     }
     if (type.isRangeStart) {
-      return buildRangeStart(dateTime, type);
+      return buildRangeStartDay(dateTime);
     }
     if (type.isRangeEnd) {
-      return buildRangeEnd(dateTime, type);
+      return buildRangeEndDay(dateTime);
     }
     if (type.isFocused) {
-      return buildFocusedDay(dateTime, type);
+      return buildFocusedDay(dateTime);
+    }
+    if (type.isOutSide) {
+      return buildOutSideDay(dateTime);
     }
 
-    return buildDefaultDay(dateTime, type);
+    return buildDefaultDay(dateTime);
   }
 
   Widget buildEvents(List events) {
-    return Positioned(
-      bottom: 6,
+    return Align(
+      alignment: style.eventAlignment,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: events
-            .take(4)
-            .map(
-              (e) => Container(
-                height: 5,
-                width: 5,
-                margin: const EdgeInsets.symmetric(horizontal: 0.5),
-                decoration: const BoxDecoration(
-                  color: Colors.deepOrangeAccent,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            )
+        mainAxisSize: MainAxisSize.min,
+        children: (style.eventCounts < 0
+                ? events.map((e) => buildEvent(e))
+                : events.take(style.eventCounts).map((e) => buildEvent(e)))
             .toList(),
+      ),
+    );
+  }
+
+  Container buildEvent(dynamic event) {
+    return Container(
+      height: style.eventSize,
+      width: style.eventSize,
+      margin: style.eventMargin,
+      decoration: BoxDecoration(
+        color: style.eventColor,
+        shape: BoxShape.circle,
       ),
     );
   }
 
   Widget buildDayOfWeek(DateTime dateTime, String weekdayString) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Center(child: Text(weekdayString)),
-    );
-  }
-
-  Widget buildSelectedDay(DateTime dateTime, DateType type) {
-    return _wrapStack(
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-            color: Colors.black,
-            shape: BoxShape.circle,
+      padding: style.dayOfWeekPadding,
+      child: Align(
+        alignment: style.dayOfWeekAlignment,
+        child: Text(
+          weekdayString,
+          style: TextStyle(
+            color: textStyle.dayOfWeekTextColor,
+            fontSize: textStyle.dayOfWeekFontSize,
           ),
         ),
-        _buildDayText(dateTime, type),
-      ],
-    );
-  }
-
-  Widget buildRangeDay(DateTime dateTime, DateType type) {
-    return Center(child: _buildDayText(dateTime, type));
-  }
-
-  Widget buildRangeStart(DateTime dateTime, DateType type) {
-    return _wrapStack(
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-            color: Colors.black,
-            shape: BoxShape.circle,
-          ),
-        ),
-        _buildDayText(dateTime, type),
-      ],
-    );
-  }
-
-  Widget buildRangeEnd(DateTime dateTime, DateType type) {
-    return _wrapStack(
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-            color: Colors.black,
-            shape: BoxShape.circle,
-          ),
-        ),
-        _buildDayText(dateTime, type),
-      ],
-    );
-  }
-
-  Widget buildFocusedDay(DateTime dateTime, DateType type) {
-    return _wrapStack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(width: 1.0, color: Colors.black),
-            shape: BoxShape.circle,
-          ),
-        ),
-        _buildDayText(dateTime, type),
-      ],
-    );
-  }
-
-  Widget buildDefaultDay(DateTime dateTime, DateType type) {
-    return _wrapStack(
-      children: [
-        const Empty(),
-        _buildDayText(dateTime, type),
-      ],
-    );
-  }
-
-  Widget _buildDayText(DateTime dateTime, DateType type) {
-    return Text(
-      dateTime.day.toString(),
-      style: TextStyle(
-        color: _getDayTextColor(type),
       ),
     );
   }
 
-  Color _getDayTextColor(DateType type) {
-    if (type.isSelected || type.isRangeStart || type.isRangeEnd) {
-      return Colors.white;
-    }
-    if (type.isOutSide) {
-      return Colors.grey;
-    }
-
-    return Colors.black;
+  Widget buildSelectedDay(DateTime dateTime) {
+    return Stack(
+      alignment: style.dayAlignment,
+      children: [
+        buildMarker(
+          color: style.rangeCircleColor,
+        ),
+        buildDayText(
+          dateTime,
+          textStyle.selectedDayTextColor,
+        ),
+      ],
+    );
   }
 
-  Widget _wrapStack({required List<Widget> children}) {
+  Widget buildRangeDay(DateTime dateTime) {
+    return Align(
+      alignment: style.dayAlignment,
+      child: Text(
+        dateTime.day.toString(),
+        style: TextStyle(
+          color: textStyle.rangeDayTextColor,
+        ),
+      ),
+    );
+  }
+
+  Widget buildRangeStartDay(DateTime dateTime) {
     return Stack(
-      alignment: Alignment.center,
-      children: children,
+      alignment: style.dayAlignment,
+      children: [
+        buildMarker(
+          color: style.rangeCircleColor,
+        ),
+        buildDayText(
+          dateTime,
+          textStyle.rangeDayTextColor,
+        ),
+      ],
+    );
+  }
+
+  Widget buildRangeEndDay(DateTime dateTime) {
+    return Stack(
+      alignment: style.dayAlignment,
+      children: [
+        buildMarker(
+          color: style.rangeCircleColor,
+        ),
+        buildDayText(
+          dateTime,
+          textStyle.rangeDayTextColor,
+        ),
+      ],
+    );
+  }
+
+  Widget buildFocusedDay(DateTime dateTime) {
+    return Stack(
+      alignment: style.dayAlignment,
+      children: [
+        buildMarker(
+          borderWidth: style.focusedDayWidth,
+        ),
+        buildDayText(
+          dateTime,
+          textStyle.focusedDayTextColor,
+        ),
+      ],
+    );
+  }
+
+  Widget buildOutSideDay(DateTime dateTime) {
+    return Align(
+      alignment: style.dayAlignment,
+      child: buildDayText(
+        dateTime,
+        textStyle.outsideDayTextColor,
+      ),
+    );
+  }
+
+  Widget buildDefaultDay(DateTime dateTime) {
+    return Align(
+      alignment: style.dayAlignment,
+      child: buildDayText(
+        dateTime,
+        textStyle.dayTextColor,
+      ),
+    );
+  }
+
+  Widget buildMarker({Color? color, double borderWidth = 1}) {
+    return Container(
+      width: style.markerSize,
+      height: style.markerSize,
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: borderWidth,
+          color: style.rangeCircleColor,
+        ),
+        color: color,
+        shape: BoxShape.circle,
+      ),
+    );
+  }
+
+  Widget buildDayText(DateTime dateTime, Color textColor) {
+    return Text(
+      dateTime.day.toString(),
+      style: TextStyle(
+        color: textColor,
+        fontSize: textStyle.dayFontSize,
+      ),
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 
 class CustomCalenderBuilder extends CalenderBuilder {
   @override
-  Widget buildRangeDay(DateTime dateTime, DateType type) {
+  Widget buildRangeDay(DateTime dateTime) {
     return Container();
   }
 

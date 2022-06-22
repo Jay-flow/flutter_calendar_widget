@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 
+import '../mocks/events.dart';
 import '../models/event.dart';
-import '../utils.dart';
 
 class EventDemoScreen extends StatefulWidget {
   const EventDemoScreen({Key? key}) : super(key: key);

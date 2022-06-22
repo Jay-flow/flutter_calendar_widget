@@ -1,9 +1,6 @@
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
-import 'package:logger/logger.dart';
 
-import 'models/event.dart';
-
-Logger logger = Logger();
+import '../models/event.dart';
 
 EventList<Event> getEventList() {
   DateTime now = DateTime.now();

@@ -1,6 +1,7 @@
-import 'package:example/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
+
+import '../utils/logger.dart';
 
 class MultipleDemoScreen extends StatelessWidget {
   const MultipleDemoScreen({Key? key}) : super(key: key);

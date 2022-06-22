@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 import 'package:flutter_calendar_widget/src/classes/default_calender_builder.dart';
+import 'package:flutter_calendar_widget/src/models/calender_style.dart';
+import 'package:flutter_calendar_widget/src/models/calender_text_style.dart';
 import 'package:flutter_calendar_widget/src/types.dart';
 import 'package:flutter_calendar_widget/src/utils/constants.dart';
 import 'package:flutter_calendar_widget/src/utils/errors.dart';
@@ -30,6 +32,8 @@ class FlutterCalendar extends StatefulWidget {
   final double daysOfWeekHeight;
   final double daysRowHeight;
   final EventList? events;
+  final CalenderStyle style;
+  final CalenderTextStyle textStyle;
 
   const FlutterCalendar({
     Key? key,
@@ -50,6 +54,8 @@ class FlutterCalendar extends StatefulWidget {
     this.onPageChanged,
     this.daysOfWeekHeight = 30,
     this.daysRowHeight = 52,
+    this.style = const CalenderStyle(),
+    this.textStyle = const CalenderTextStyle(),
   }) : super(key: key);
 
   @override
@@ -72,7 +78,11 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
     _focusedDate = widget.focusedDate ?? today;
     _selectedDates = widget.selectedDates ?? [];
     _currentPageMonth = _focusedDate;
-    _calenderBuilder = widget.calenderBuilder ?? DefaultCalenderBuilder();
+    _calenderBuilder = widget.calenderBuilder ??
+        DefaultCalenderBuilder(
+          textStyle: widget.textStyle,
+          style: widget.style,
+        );
     _firstDate = widget.firstDate ??
         DateTime(_focusedDate.year, _focusedDate.month - 3, _focusedDate.day);
     _lastDate = widget.lastDate ??

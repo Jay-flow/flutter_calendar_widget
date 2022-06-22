@@ -14,3 +14,8 @@ enum FlutterCalendarSelectionMode {
   single,
   multiple,
 }
+
+enum CalendarTheme {
+  dark,
+  light,
+}

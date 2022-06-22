@@ -1,4 +1,5 @@
 import 'package:example/screens/basic_demo_screen.dart';
+import 'package:example/utils/themes.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
@@ -11,10 +12,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
+      theme: Themes.light,
+      darkTheme: Themes.dark,
       title: 'flutter_calendar_widget demo',
-      home: BasicDemoScreen(),
+      home: const BasicDemoScreen(),
     );
   }
 }

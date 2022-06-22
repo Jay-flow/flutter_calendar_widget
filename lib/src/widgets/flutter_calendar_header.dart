@@ -33,7 +33,9 @@ class FlutterCalendarHeader extends StatelessWidget {
           Expanded(
             child: Text(
               month,
-              style: const TextStyle(fontSize: 17.0),
+              style: const TextStyle(
+                fontSize: 17.0,
+              ),
             ),
           ),
           IconButton(

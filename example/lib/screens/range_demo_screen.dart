@@ -1,6 +1,7 @@
-import 'package:example/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
+
+import '../utils/logger.dart';
 
 class RangeDemoScreen extends StatelessWidget {
   const RangeDemoScreen({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class RangeDemoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Single demo screen'),
+        title: const Text('Range demo screen'),
       ),
       body: SafeArea(
         child: FlutterCalendar(
