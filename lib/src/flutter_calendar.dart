@@ -100,7 +100,6 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
         _selectedDates = [day];
       } else if (widget.selectionMode == CalendarSelectionMode.range) {
         _updateRageDay(day);
-      } else if (widget.selectionMode == CalendarSelectionMode.multipleRange) {
       } else if (widget.selectionMode == CalendarSelectionMode.multiple) {
         _selectedDates.add(day);
       }
