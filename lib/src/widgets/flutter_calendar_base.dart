@@ -11,8 +11,8 @@ import 'calendar_page.dart';
 class FlutterCalendarBase extends StatefulWidget {
   final DateTime focusedDate;
   final List<DateTime> selectedDates;
-  final DateTime firstDate;
-  final DateTime lastDate;
+  final DateTime minDate;
+  final DateTime maxDate;
   final FlutterCalendarSelectionMode selectionMode;
   final DayOfWeek startingDayOfWeek;
   final PageController pageController;
@@ -27,8 +27,8 @@ class FlutterCalendarBase extends StatefulWidget {
     Key? key,
     required this.focusedDate,
     required this.selectedDates,
-    required this.firstDate,
-    required this.lastDate,
+    required this.minDate,
+    required this.maxDate,
     required this.selectionMode,
     required this.startingDayOfWeek,
     required this.pageController,
@@ -81,10 +81,10 @@ class _FlutterCalendarBaseState extends State<FlutterCalendarBase> {
     return date.subtract(const Duration(days: 1));
   }
 
-  int _getDaysAfter(DateTime lastDate) {
+  int _getDaysAfter(DateTime maxDate) {
     int invertedStartingWeekday =
         8 - getWeekdayNumber(widget.startingDayOfWeek);
-    int daysAfter = 7 - ((lastDate.weekday + invertedStartingWeekday) % 7);
+    int daysAfter = 7 - ((maxDate.weekday + invertedStartingWeekday) % 7);
 
     if (daysAfter == 7) {
       return 0;
@@ -148,7 +148,7 @@ class _FlutterCalendarBaseState extends State<FlutterCalendarBase> {
     return _isRangeStart(date) || _isRangeEnd(date) || _isRange(date);
   }
 
-  int _getItemCount() => getMonthCount(widget.firstDate, widget.lastDate) + 1;
+  int _getItemCount() => getMonthCount(widget.minDate, widget.maxDate) + 1;
 
   @override
   Widget build(BuildContext context) {
@@ -160,14 +160,14 @@ class _FlutterCalendarBaseState extends State<FlutterCalendarBase> {
         physics: widget.scrollPhysics,
         onPageChanged: (int index) {
           final DateTime baseDay =
-              DateTime(widget.firstDate.year, widget.firstDate.month + index);
+              DateTime(widget.minDate.year, widget.minDate.month + index);
 
           widget.onPageChanged(index, baseDay);
         },
         itemCount: _getItemCount(),
         itemBuilder: (BuildContext _, int index) {
           final DateTime baseDay =
-              DateTime(widget.firstDate.year, widget.firstDate.month + index);
+              DateTime(widget.minDate.year, widget.minDate.month + index);
 
           final DateTimeRange visibleRange = _daysInMonth(baseDay);
           final List<DateTime> visibleDays =
@@ -188,7 +188,7 @@ class _FlutterCalendarBaseState extends State<FlutterCalendarBase> {
                 },
                 dayBuilder: (DateTime dateTime) {
                   DateTime baseDay = DateTime(
-                      widget.firstDate.year, widget.firstDate.month + index);
+                      widget.minDate.year, widget.minDate.month + index);
 
                   bool isOutSide = dateTime.month != baseDay.month;
 

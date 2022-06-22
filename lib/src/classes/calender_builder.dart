@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/src/models/calender_text_style.dart';
+import 'package:intl/intl.dart';
 
 import '../../flutter_calendar_widget.dart';
 import '../models/calender_style.dart';
@@ -13,6 +16,36 @@ abstract class CalenderBuilder {
     this.textStyle = const CalenderTextStyle(),
     this.style = const CalenderStyle(),
   });
+
+  Widget buildHeader(
+    VoidCallback onLeftTap,
+    VoidCallback onRightTap,
+    DateTime dateTime,
+  ) {
+    final month = DateFormat.yMMMM(Platform.localeName).format(dateTime);
+
+    return Padding(
+      padding: style.headerPadding,
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: onLeftTap,
+            icon: style.headerLeftIcon,
+          ),
+          Expanded(
+            child: Text(
+              month,
+              style: style.headerTextStyle,
+            ),
+          ),
+          IconButton(
+            onPressed: onRightTap,
+            icon: style.headerRightIcon,
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget build(
     DateTime dateTime,

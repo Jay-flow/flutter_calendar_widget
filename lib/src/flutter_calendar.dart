@@ -9,6 +9,7 @@ import 'package:flutter_calendar_widget/src/types.dart';
 import 'package:flutter_calendar_widget/src/utils/constants.dart';
 import 'package:flutter_calendar_widget/src/utils/errors.dart';
 import 'package:flutter_calendar_widget/src/utils/functions.dart';
+import 'package:flutter_calendar_widget/src/widgets/empty.dart';
 import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_base.dart';
 import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_header.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -17,8 +18,8 @@ import 'package:intl/intl.dart';
 class FlutterCalendar extends StatefulWidget {
   final DateTime? focusedDate;
   final List<DateTime>? selectedDates;
-  final DateTime? firstDate;
-  final DateTime? lastDate;
+  final DateTime? minDate;
+  final DateTime? maxDate;
   final FlutterCalendarSelectionMode selectionMode;
   final DayOfWeek startingDayOfWeek;
   final CalenderBuilder? calenderBuilder;
@@ -34,13 +35,14 @@ class FlutterCalendar extends StatefulWidget {
   final EventList? events;
   final CalenderStyle style;
   final CalenderTextStyle textStyle;
+  final bool isHeaderDisplayed;
 
   const FlutterCalendar({
     Key? key,
     this.focusedDate,
     this.selectedDates,
-    this.firstDate,
-    this.lastDate,
+    this.minDate,
+    this.maxDate,
     this.selectionMode = FlutterCalendarSelectionMode.single,
     this.startingDayOfWeek = DayOfWeek.sun,
     this.events,
@@ -56,6 +58,7 @@ class FlutterCalendar extends StatefulWidget {
     this.daysRowHeight = 52,
     this.style = const CalenderStyle(),
     this.textStyle = const CalenderTextStyle(),
+    this.isHeaderDisplayed = true,
   }) : super(key: key);
 
   @override
@@ -66,8 +69,8 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   late DateTime _focusedDate;
   late List<DateTime> _selectedDates;
   late DateTime _currentPageMonth;
-  late final DateTime _firstDate;
-  late final DateTime _lastDate;
+  late final DateTime _minDate;
+  late final DateTime _maxDate;
   late final PageController _pageController;
   late final CalenderBuilder _calenderBuilder;
 
@@ -83,13 +86,13 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
           textStyle: widget.textStyle,
           style: widget.style,
         );
-    _firstDate = widget.firstDate ??
+    _minDate = widget.minDate ??
         DateTime(_focusedDate.year, _focusedDate.month - 3, _focusedDate.day);
-    _lastDate = widget.lastDate ??
+    _maxDate = widget.maxDate ??
         DateTime(_focusedDate.year, _focusedDate.month + 3, _focusedDate.day);
     _pageController = widget.pageController ??
         PageController(
-          initialPage: getMonthCount(_firstDate, _focusedDate),
+          initialPage: getMonthCount(_minDate, _focusedDate),
         );
 
     super.initState();
@@ -170,16 +173,19 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        FlutterCalendarHeader(
-          currentPageMonth: _currentPageMonth,
-          onLeftChevronTap: _onLeftChevronTap,
-          onRightChevronTap: _onRightChevronTap,
-        ),
+        widget.isHeaderDisplayed
+            ? FlutterCalendarHeader(
+                currentPageMonth: _currentPageMonth,
+                onLeftChevronTap: _onLeftChevronTap,
+                onRightChevronTap: _onRightChevronTap,
+                calenderBuilder: _calenderBuilder,
+              )
+            : const Empty(),
         FlutterCalendarBase(
           focusedDate: _focusedDate,
           selectedDates: _selectedDates,
-          firstDate: _firstDate,
-          lastDate: _lastDate,
+          minDate: _minDate,
+          maxDate: _maxDate,
           selectionMode: widget.selectionMode,
           startingDayOfWeek: widget.startingDayOfWeek,
           pageController: _pageController,
