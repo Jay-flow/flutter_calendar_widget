@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 import 'package:flutter_calendar_widget/src/classes/default_calender_builder.dart';
-import 'package:flutter_calendar_widget/src/models/calender_style.dart';
-import 'package:flutter_calendar_widget/src/models/calender_text_style.dart';
 import 'package:flutter_calendar_widget/src/types.dart';
 import 'package:flutter_calendar_widget/src/utils/constants.dart';
 import 'package:flutter_calendar_widget/src/utils/errors.dart';
@@ -77,7 +75,11 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   @override
   void initState() {
     initializeDateFormatting();
+    _init();
+    super.initState();
+  }
 
+  void _init() {
     _focusedDate = widget.focusedDate ?? today;
     _selectedDates = widget.selectedDates ?? [];
     _currentPageMonth = _focusedDate;
@@ -94,8 +96,6 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
         PageController(
           initialPage: getMonthCount(_minDate, _focusedDate),
         );
-
-    super.initState();
   }
 
   void _updateSelectedDay(DateTime day) {

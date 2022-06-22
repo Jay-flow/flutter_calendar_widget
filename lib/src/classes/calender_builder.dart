@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar_widget/src/models/calender_text_style.dart';
 import 'package:intl/intl.dart';
 
 import '../../flutter_calendar_widget.dart';
-import '../models/calender_style.dart';
 import '../widgets/empty.dart';
 
 abstract class CalenderBuilder {
