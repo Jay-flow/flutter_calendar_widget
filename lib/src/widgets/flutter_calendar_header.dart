@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar_widget/src/classes/calender_builder.dart';
+import 'package:flutter_calendar_widget/src/classes/calendar_builder.dart';
 
 class FlutterCalendarHeader extends StatelessWidget {
   final VoidCallback onLeftChevronTap;
   final VoidCallback onRightChevronTap;
   final DateTime currentPageMonth;
-  final CalenderBuilder calenderBuilder;
+  final CalendarBuilder calendarBuilder;
   final String locale;
 
   const FlutterCalendarHeader({
@@ -13,13 +13,13 @@ class FlutterCalendarHeader extends StatelessWidget {
     required this.onLeftChevronTap,
     required this.onRightChevronTap,
     required this.currentPageMonth,
-    required this.calenderBuilder,
+    required this.calendarBuilder,
     required this.locale,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return calenderBuilder.buildHeader(
+    return calendarBuilder.buildHeader(
       onLeftChevronTap,
       onRightChevronTap,
       currentPageMonth,

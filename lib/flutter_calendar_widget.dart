@@ -1,4 +1,4 @@
-export 'src/classes/calender_builder.dart';
+export 'src/classes/calendar_builder.dart';
 export 'src/classes/event_list.dart';
 export 'src/flutter_calendar.dart';
 export 'src/models/calendar_date_range.dart';

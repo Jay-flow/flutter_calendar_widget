@@ -118,5 +118,15 @@ Styles other than text styles can be changed by injecting an instance of Calenda
 #### Example
 
 ```dart
-
+FlutterCalendar(
+    selectionMode: CalendarSelectionMode.single,
+    style: const CalendarStyle(
+        markerColor: Colors.green,
+    ),
+)
 ```
+
+## How to change widgets
+
+All widgets in the calendar can be changed.
+All widgets are built in the inheritance of the CalendarBuilder abstract class, and you can make changes to the required widgets via method override.

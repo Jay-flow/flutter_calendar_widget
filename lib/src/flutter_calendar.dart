@@ -32,8 +32,8 @@ class FlutterCalendar extends StatefulWidget {
   /// The day of the week to start on the calendar.
   final DayOfWeek startingDayOfWeek;
 
-  /// Instance that inherited [CalenderBuilder] to create a custom calendar.
-  final CalenderBuilder? calenderBuilder;
+  /// Instance that inherited [CalendarBuilder] to create a custom calendar.
+  final CalendarBuilder? calendarBuilder;
 
   /// Called whenever any day gets tapped.
   final DateTimeCallback? onDayPressed;
@@ -80,7 +80,7 @@ class FlutterCalendar extends StatefulWidget {
     this.selectionMode = CalendarSelectionMode.single,
     this.startingDayOfWeek = DayOfWeek.sun,
     this.events,
-    this.calenderBuilder,
+    this.calendarBuilder,
     this.onDayPressed,
     this.onDayLongPressed,
     this.onRageDate,
@@ -105,7 +105,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   late DateTime _minDate;
   late DateTime _maxDate;
   late PageController _pageController;
-  late CalenderBuilder _calenderBuilder;
+  late CalendarBuilder _calenderBuilder;
   late String _locale;
 
   @override
@@ -125,7 +125,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
     _focusedDate = widget.focusedDate ?? today;
     _selectedDates = widget.selectedDates ?? [];
     _currentPageMonth = _focusedDate;
-    _calenderBuilder = widget.calenderBuilder ?? DefaultCalenderBuilder();
+    _calenderBuilder = widget.calendarBuilder ?? DefaultCalenderBuilder();
     _calenderBuilder.textStyle = widget.textStyle;
     _calenderBuilder.style = widget.style;
     _minDate = widget.minDate ??
@@ -216,7 +216,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
                 currentPageMonth: _currentPageMonth,
                 onLeftChevronTap: _onLeftChevronTap,
                 onRightChevronTap: _onRightChevronTap,
-                calenderBuilder: _calenderBuilder,
+                calendarBuilder: _calenderBuilder,
                 locale: _locale,
               )
             : const Empty(),
