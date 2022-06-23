@@ -1,3 +1,17 @@
+/// The event list for containing events.
+///
+/// ```dart
+/// EventList<Event> getEventList() {
+///  return EventList(
+///     events: {
+///       DateTime(2022, 6, 7): [
+///         const Event('Event 1'),
+///       ],
+///  )
+/// }
+/// ```
+/// See also:
+/// [Demo](https://github.com/dooboolab/flutter_calendar_widget/blob/main/example/lib/screens/event_demo_screen.dart)
 class EventList<T> {
   late Map<DateTime, List<T>> events;
 

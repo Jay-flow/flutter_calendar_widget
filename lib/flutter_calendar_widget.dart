@@ -1,8 +1,9 @@
-export 'src/flutter_calendar.dart';
-export 'src/models/calendar_date_range.dart';
-export 'src/models/date_type.dart';
-export 'src/models/enums.dart';
-export 'src/models/calender_style.dart';
-export 'src/models/calender_text_style.dart';
 export 'src/classes/calender_builder.dart';
 export 'src/classes/event_list.dart';
+export 'src/flutter_calendar.dart';
+export 'src/models/calendar_date_range.dart';
+export 'src/models/calender_style.dart';
+export 'src/models/calender_text_style.dart';
+export 'src/models/date_type.dart';
+export 'src/models/enums.dart';
+export 'src/utils/errors.dart';

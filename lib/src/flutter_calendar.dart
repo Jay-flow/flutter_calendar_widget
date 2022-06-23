@@ -5,7 +5,6 @@ import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 import 'package:flutter_calendar_widget/src/classes/default_calender_builder.dart';
 import 'package:flutter_calendar_widget/src/types.dart';
 import 'package:flutter_calendar_widget/src/utils/constants.dart';
-import 'package:flutter_calendar_widget/src/utils/errors.dart';
 import 'package:flutter_calendar_widget/src/utils/functions.dart';
 import 'package:flutter_calendar_widget/src/widgets/empty.dart';
 import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_base.dart';
@@ -13,24 +12,58 @@ import 'package:flutter_calendar_widget/src/widgets/flutter_calendar_header.dart
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+/// The [FlutterCalendar] is a flexible and freely changeable calendar of widgets.
 class FlutterCalendar extends StatefulWidget {
+  /// Date focused on the calendar.
+  /// The calendar displays the first calendar based on that date.
   final DateTime? focusedDate;
+
   final List<DateTime>? selectedDates;
+
+  /// Minimum date to be displayed in the calendar.
   final DateTime? minDate;
+
+  /// Maximum date to be displayed in the calendar.
   final DateTime? maxDate;
+
+  /// The mode of calendar to select.
   final CalendarSelectionMode selectionMode;
+
+  /// The day of the week to start on the calendar.
   final DayOfWeek startingDayOfWeek;
+
+  /// Instance that inherited [CalenderBuilder] to create a custom calendar.
   final CalenderBuilder? calenderBuilder;
+
+  /// Called whenever any day gets tapped.
   final DateTimeCallback? onDayPressed;
+
+  /// Called whenever any day gets long pressed
   final DateTimeCallback? onDayLongPressed;
+
+  /// Callback when range date is selected.
   final OnRageDate? onRageDate;
+
+  /// Callback when multiple dates are selected.
   final OnMultipleDates? onMultipleDates;
   final ScrollPhysics? scrollPhysics;
+
+  /// The page controller for the calendar.
   final PageController? pageController;
+
+  /// Callback when the page of the calendar changes.
   final OnPageChanged? onPageChanged;
+
+  /// Events to be displayed in the calendar.
   final EventList? events;
+
+  /// Specifies styles other than text styles in the calendar.
   final CalenderStyle style;
+
+  /// Specifies the text style of the calendar.
   final CalenderTextStyle textStyle;
+
+  /// Whether the calendar's navigation header will be visible.
   final bool isHeaderDisplayed;
 
   const FlutterCalendar({
@@ -111,6 +144,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
       _selectedDates = [day];
     } else {
       _selectedDates.add(day);
+      _selectedDates.sort((a, b) => a.compareTo(b));
     }
   }
 
@@ -133,9 +167,6 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   }
 
   void _returnDays() {
-    if (_selectedDates.length > 1) {
-      _selectedDates.sort((a, b) => a.compareTo(b));
-    }
     if (widget.onDayPressed != null) {
       widget.onDayPressed!(_selectedDates.first);
     }

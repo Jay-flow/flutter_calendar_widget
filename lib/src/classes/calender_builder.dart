@@ -6,6 +6,13 @@ import 'package:intl/intl.dart';
 import '../../flutter_calendar_widget.dart';
 import '../widgets/empty.dart';
 
+/// An abstract class for building a date widget on the calendar.
+///
+/// If you want to customize the data widget,
+/// inherit the class and implement it.
+///
+/// See also:
+/// [Demo](https://github.com/dooboolab/flutter_calendar_widget/blob/main/example/lib/screens/custom_demo_screen.dart)
 abstract class CalenderBuilder {
   final CalenderStyle style;
   final CalenderTextStyle textStyle;
@@ -34,7 +41,7 @@ abstract class CalenderBuilder {
           Expanded(
             child: Text(
               month,
-              style: style.headerTextStyle,
+              style: textStyle.headerTextStyle,
             ),
           ),
           IconButton(
@@ -190,7 +197,7 @@ abstract class CalenderBuilder {
       alignment: style.dayAlignment,
       children: [
         buildMarker(
-          color: style.rangeCircleColor,
+          color: style.markerColor,
         ),
         buildDayText(
           dateTime,
@@ -217,7 +224,7 @@ abstract class CalenderBuilder {
       alignment: style.dayAlignment,
       children: [
         buildMarker(
-          color: style.rangeCircleColor,
+          color: style.markerColor,
         ),
         buildDayText(
           dateTime,
@@ -232,7 +239,7 @@ abstract class CalenderBuilder {
       alignment: style.dayAlignment,
       children: [
         buildMarker(
-          color: style.rangeCircleColor,
+          color: style.markerColor,
         ),
         buildDayText(
           dateTime,
@@ -247,7 +254,7 @@ abstract class CalenderBuilder {
       alignment: style.dayAlignment,
       children: [
         buildMarker(
-          borderWidth: style.focusedDayWidth,
+          borderWidth: style.focusedDayBorderWidth,
         ),
         buildDayText(
           dateTime,
@@ -284,7 +291,7 @@ abstract class CalenderBuilder {
       decoration: BoxDecoration(
         border: Border.all(
           width: borderWidth,
-          color: style.rangeCircleColor,
+          color: style.markerColor,
         ),
         color: color,
         shape: BoxShape.circle,
