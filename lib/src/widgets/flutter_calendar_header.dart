@@ -6,6 +6,7 @@ class FlutterCalendarHeader extends StatelessWidget {
   final VoidCallback onRightChevronTap;
   final DateTime currentPageMonth;
   final CalenderBuilder calenderBuilder;
+  final String locale;
 
   const FlutterCalendarHeader({
     Key? key,
@@ -13,6 +14,7 @@ class FlutterCalendarHeader extends StatelessWidget {
     required this.onRightChevronTap,
     required this.currentPageMonth,
     required this.calenderBuilder,
+    required this.locale,
   }) : super(key: key);
 
   @override
@@ -21,6 +23,7 @@ class FlutterCalendarHeader extends StatelessWidget {
       onLeftChevronTap,
       onRightChevronTap,
       currentPageMonth,
+      locale,
     );
   }
 }

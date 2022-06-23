@@ -66,6 +66,11 @@ class FlutterCalendar extends StatefulWidget {
   /// Whether the calendar's navigation header will be visible.
   final bool isHeaderDisplayed;
 
+  /// Locale to format `TableCalendar` dates with, for example: `'ko'`.
+  ///
+  /// If nothing is provided, a default locale will be used.
+  final String? locale;
+
   const FlutterCalendar({
     Key? key,
     this.focusedDate,
@@ -86,6 +91,7 @@ class FlutterCalendar extends StatefulWidget {
     this.style = const CalendarStyle(),
     this.textStyle = const CalendarTextStyle(),
     this.isHeaderDisplayed = true,
+    this.locale,
   }) : super(key: key);
 
   @override
@@ -100,6 +106,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   late DateTime _maxDate;
   late PageController _pageController;
   late CalenderBuilder _calenderBuilder;
+  late String _locale;
 
   @override
   void initState() {
@@ -129,6 +136,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
         PageController(
           initialPage: getMonthCount(_minDate, _focusedDate),
         );
+    _locale = widget.locale ?? Platform.localeName;
   }
 
   void _updateSelectedDay(DateTime day) {
@@ -209,6 +217,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
                 onLeftChevronTap: _onLeftChevronTap,
                 onRightChevronTap: _onRightChevronTap,
                 calenderBuilder: _calenderBuilder,
+                locale: _locale,
               )
             : const Empty(),
         Container(
@@ -234,7 +243,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
             },
             dowBuilder: (DateTime dateTime) {
               final String weekdayString = DateFormat.E(
-                Platform.localeName,
+                _locale,
               ).format(dateTime);
 
               return _calenderBuilder.buildDayOfWeek(dateTime, weekdayString);

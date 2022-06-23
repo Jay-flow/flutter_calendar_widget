@@ -11,11 +11,18 @@ Not only can you change the style, but you can also change the widget in the cal
 
 - Supports multiple date selections such as single, range, multiple, etc
 - Calendar size changes dynamically depending on content.
+- Multilingual translation support.
 - Can add calendar navigation header.
 - Can change the icon in the navigation header.
 - Calendar style can be changed.
 - All text in the calendar can be changed.
 - Advanced customizable; all widgets in the calendar can be changed.
+
+# Installing
+
+```bash
+flutter pub add flutter_calendar_widget
+```
 
 # Usage
 
@@ -31,7 +38,7 @@ Allows to select a single date, selecting a new date will remove the selection f
 
 #### Preview
 
-![sigle_demo](./doc/single_demo.gif)
+![single_demo](./doc/single_demo.gif)
 
 #### Example
 
@@ -88,14 +95,28 @@ FlutterCalendar(
 
 There are two main ways to style that calendar widget.
 
-### To change the style of text.
+### 1. To change the style of text.
 
 You can change the text style by injecting a CalendarTextStyle instance.
 
 #### Example
 
 ```dart
-
+FlutterCalendar(
+    selectionMode: CalendarSelectionMode.single,
+    textStyle: const CalendarTextStyle(
+        dayFontSize: 16,
+        dayTextColor: Colors.blue,
+    ),
+)
 ```
 
 ### 2. To change the style except for text.
+
+Styles other than text styles can be changed by injecting an instance of CalendarStyle.
+
+#### Example
+
+```dart
+
+```

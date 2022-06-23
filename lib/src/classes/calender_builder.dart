@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -21,8 +19,9 @@ abstract class CalenderBuilder {
     VoidCallback onLeftTap,
     VoidCallback onRightTap,
     DateTime dateTime,
+    String locale,
   ) {
-    final month = DateFormat.yMMMM(Platform.localeName).format(dateTime);
+    final month = DateFormat.yMMMM(locale).format(dateTime);
 
     return Container(
       margin: style.headerMargin,
