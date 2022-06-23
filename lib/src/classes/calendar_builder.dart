@@ -47,7 +47,7 @@ abstract class CalendarBuilder {
     );
   }
 
-  Widget build(
+  Widget buildDate(
     DateTime dateTime,
     DateType type,
     List events,

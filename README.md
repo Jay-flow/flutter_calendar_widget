@@ -1,7 +1,9 @@
-# 📅 flutter_calendar_widget
+# flutter_calendar_widget
 
 ![GitHub](https://img.shields.io/github/license/dooboolab/flutter_calendar_widget)
 ![Pub Version](https://img.shields.io/pub/v/flutter_calendar_widget)
+
+![logo](./doc/logo.png)
 
 The flutter_calendar_widget is a flexible and freely changeable calendar of widgets.
 
@@ -10,15 +12,16 @@ Not only can you change the style, but you can also change the widget in the cal
 # Features
 
 - Supports multiple date selections such as single, range, multiple, etc
-- Calendar size changes dynamically depending on content.
+- Can register events in the calendar
+- Advanced customizable; all widgets in the calendar can be changed.
 - Multilingual translation support.
+- Calendar size changes dynamically depending on content.
 - Can add calendar navigation header.
 - Can change the icon in the navigation header.
 - Calendar style can be changed.
 - All text in the calendar can be changed.
-- Advanced customizable; all widgets in the calendar can be changed.
 
-# Installing
+# Installation
 
 ```bash
 flutter pub add flutter_calendar_widget
@@ -130,3 +133,141 @@ FlutterCalendar(
 
 All widgets in the calendar can be changed.
 All widgets are built in the inheritance of the CalendarBuilder abstract class, and you can make changes to the required widgets via method override.
+
+### Preview
+
+![custom_demo](./doc/custom_demo.gif)
+
+### Example
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
+
+class CustomCalenderBuilder extends CalendarBuilder {
+  @override
+  Widget buildRangeDay(DateTime dateTime) {
+    return Container();
+  }
+
+  @override
+  Widget buildRangeDayLine(BoxConstraints constraints) {
+    return SizedBox(
+      child: Container(
+        alignment: Alignment.center,
+        color: Colors.greenAccent,
+        child: const Text(
+          '😀',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget buildRangeStartLine(BoxConstraints constraints) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        width: constraints.maxWidth / 2,
+        decoration: BoxDecoration(
+          border: Border.all(width: 0, color: Colors.greenAccent),
+          color: Colors.greenAccent,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget buildRangeEndLine(BoxConstraints constraints) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        width: constraints.maxWidth / 2,
+        decoration: BoxDecoration(
+          border: Border.all(width: 0, color: Colors.greenAccent),
+          color: Colors.greenAccent,
+        ),
+      ),
+    );
+  }
+}
+
+class CustomDemoScreen extends StatelessWidget {
+  const CustomDemoScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Custom demo screen'),
+      ),
+      body: SafeArea(
+        child: FlutterCalendar(
+          selectionMode: CalendarSelectionMode.range,
+          calendarBuilder: CustomCalenderBuilder(),
+
+        ),
+      ),
+    );
+  }
+}
+
+```
+
+## How to register events
+
+You can create an event and register it in the calendar.
+
+### Preview
+
+![event_demo](./doc/event_demo.gif)
+
+### Usages
+
+Create an EventList to register events.
+If you put the type in General, you can distinguish the type during the onDayPressed callback.
+
+#### Example
+
+```dart
+EventList<Event> events = EventList(
+    events: {
+        DateTime(2022, 6, 7): [
+            const Event('Event 1),
+            const Event('Event 2),
+        ]
+    }
+);
+
+...
+
+FlutterCalendar(
+    selectionMode: CalendarSelectionMode.single,
+    focusedDate: DateTime.now(),
+    events: events,
+    onDayPressed: (DateTime day) {
+        Event event = events.get(day);
+        print(event);
+    },
+),
+```
+
+See also: [event_demo_screen](https://github.com/dooboolab/flutter_calendar_widget/blob/main/example/lib/screens/event_demo_screen.dart)
+
+## How to set localization
+
+The project is being localized using the [intl](https://pub.dev/packages/intl) package.
+
+The default is the language value set on the device.
+You can refer to the value that can be entered in locale [here](https://pub.dev/documentation/intl/latest/date_symbol_data_http_request/availableLocalesForDateFormatting.html).
+
+### Example
+
+```dart
+FlutterCalendar(
+    locale: 'en',
+)
+```

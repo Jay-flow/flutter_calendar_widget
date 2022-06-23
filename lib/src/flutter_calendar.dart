@@ -260,7 +260,7 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
                         widget.onDayLongPressed!(dateTime);
                       }
                     },
-                    child: _calenderBuilder.build(
+                    child: _calenderBuilder.buildDate(
                       dateTime,
                       type,
                       widget.events?.get(dateTime) ?? [],
