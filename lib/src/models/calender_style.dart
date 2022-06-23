@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-/// The [CalenderStyle] is a model that defines the style of the calendar.
+/// The [CalendarStyle] is a model that defines the style of the calendar.
 ///
 /// If you want to define a text style for the calendar,
-/// use [CalenderTextStyle] instead of [CalenderStyle].
-class CalenderStyle {
+/// use [CalendarTextStyle] instead of [CalendarStyle].
+class CalendarStyle {
   /// Widget that moves the previous calendar in the calendar header.
   final Widget headerLeftIcon;
 
@@ -73,7 +73,7 @@ class CalenderStyle {
   /// If -1 is given, there is no limit.
   final int eventCounts;
 
-  const CalenderStyle({
+  const CalendarStyle({
     this.headerLeftIcon = const Icon(
       Icons.chevron_left_outlined,
     ),

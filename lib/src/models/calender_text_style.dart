@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// The [CalenderTextStyle] is a model that defines the text style of the calendar.
+/// The [CalendarTextStyle] is a model that defines the text style of the calendar.
 ///
 /// If you want to specify a different style besides changing
 /// the text style of the calendar,
-/// use [CalendarStyle] instead of [CalenderTextStyle].
-class CalenderTextStyle {
+/// use [CalendarStyle] instead of [CalendarTextStyle].
+class CalendarTextStyle {
   /// The color of the normal date.
   ///
   /// It means the date when the item below was excluded.
@@ -41,7 +41,7 @@ class CalenderTextStyle {
   /// The font size of the calendar header.
   final TextStyle headerTextStyle;
 
-  const CalenderTextStyle({
+  const CalendarTextStyle({
     this.dayTextColor = Colors.black,
     this.focusedDayTextColor = Colors.black,
     this.selectedDayTextColor = Colors.white,

@@ -14,13 +14,8 @@ import '../widgets/empty.dart';
 /// See also:
 /// [Demo](https://github.com/dooboolab/flutter_calendar_widget/blob/main/example/lib/screens/custom_demo_screen.dart)
 abstract class CalenderBuilder {
-  final CalenderStyle style;
-  final CalenderTextStyle textStyle;
-
-  const CalenderBuilder({
-    this.textStyle = const CalenderTextStyle(),
-    this.style = const CalenderStyle(),
-  });
+  late final CalendarStyle style;
+  late final CalendarTextStyle textStyle;
 
   Widget buildHeader(
     VoidCallback onLeftTap,

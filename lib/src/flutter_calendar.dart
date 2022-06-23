@@ -58,10 +58,10 @@ class FlutterCalendar extends StatefulWidget {
   final EventList? events;
 
   /// Specifies styles other than text styles in the calendar.
-  final CalenderStyle style;
+  final CalendarStyle style;
 
   /// Specifies the text style of the calendar.
-  final CalenderTextStyle textStyle;
+  final CalendarTextStyle textStyle;
 
   /// Whether the calendar's navigation header will be visible.
   final bool isHeaderDisplayed;
@@ -83,8 +83,8 @@ class FlutterCalendar extends StatefulWidget {
     this.scrollPhysics,
     this.pageController,
     this.onPageChanged,
-    this.style = const CalenderStyle(),
-    this.textStyle = const CalenderTextStyle(),
+    this.style = const CalendarStyle(),
+    this.textStyle = const CalendarTextStyle(),
     this.isHeaderDisplayed = true,
   }) : super(key: key);
 
@@ -112,11 +112,9 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
     _focusedDate = widget.focusedDate ?? today;
     _selectedDates = widget.selectedDates ?? [];
     _currentPageMonth = _focusedDate;
-    _calenderBuilder = widget.calenderBuilder ??
-        DefaultCalenderBuilder(
-          textStyle: widget.textStyle,
-          style: widget.style,
-        );
+    _calenderBuilder = widget.calenderBuilder ?? DefaultCalenderBuilder();
+    _calenderBuilder.textStyle = widget.textStyle;
+    _calenderBuilder.style = widget.style;
     _minDate = widget.minDate ??
         DateTime(_focusedDate.year, _focusedDate.month - 3, _focusedDate.day);
     _maxDate = widget.maxDate ??

@@ -65,6 +65,14 @@ class CustomDemoScreen extends StatelessWidget {
         child: FlutterCalendar(
           selectionMode: CalendarSelectionMode.range,
           calenderBuilder: CustomCalenderBuilder(),
+          textStyle: const CalendarTextStyle(
+            dayFontSize: 16,
+            dayTextColor: Colors.blue,
+            rangeDayTextColor: Colors.yellow,
+          ),
+          style: const CalendarStyle(
+            markerColor: Colors.green,
+          ),
         ),
       ),
     );
