@@ -271,3 +271,15 @@ FlutterCalendar(
     locale: 'en',
 )
 ```
+
+## Contributors ✨
+
+Please make sure to read the [Contributing Guide](https://github.com/dooboolab/flutter_calendar_widget/blob/main/CONTRIBUTING.md) before making a pull request. Thank you to all the people who helped to maintain and upgrade this project!
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/Jay-flow"><img src="https://avatars0.githubusercontent.com/u/29420674?v=4" width="60px;" alt="J-flow"/><br /><sub><b>J-flow</b></sub></a><br /><a href="https://github.com/dooboolab/flutter_calendar_widget/commits?author=Jay-flow" title="Code">💻</a><a href="https://github.com/dooboolab/flutter_calendar_widget/commits?author=Jay-flow" title="Tests">⚠️</a> <a href="https://github.com/dooboolab/flutter_calendar_widget/commits?author=Jay-flow" title="Documentation">📖</a></td>
+  </tr>
+</table>
