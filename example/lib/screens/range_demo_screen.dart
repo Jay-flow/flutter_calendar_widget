@@ -10,14 +10,16 @@ class RangeDemoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Range demo screen'),
+        title: const Text(
+          'Range demo screen',
+        ),
       ),
       body: SafeArea(
         child: FlutterCalendar(
           selectionMode: CalendarSelectionMode.range,
           onRageDate: (CalendarDateRange dateRange) {
             logger.i(
-              '[onRageDate] start: ${dateRange.start}, end ${dateRange.end}',
+              '[onRageDate] start: ${dateRange.start}, end: ${dateRange.end}',
             );
           },
         ),

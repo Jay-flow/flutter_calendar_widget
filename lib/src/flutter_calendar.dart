@@ -96,16 +96,22 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
   late DateTime _focusedDate;
   late List<DateTime> _selectedDates;
   late DateTime _currentPageMonth;
-  late final DateTime _minDate;
-  late final DateTime _maxDate;
-  late final PageController _pageController;
-  late final CalenderBuilder _calenderBuilder;
+  late DateTime _minDate;
+  late DateTime _maxDate;
+  late PageController _pageController;
+  late CalenderBuilder _calenderBuilder;
 
   @override
   void initState() {
     initializeDateFormatting();
     _init();
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(FlutterCalendar oldWidget) {
+    _init();
+    super.didUpdateWidget(oldWidget);
   }
 
   void _init() {
