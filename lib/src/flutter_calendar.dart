@@ -117,7 +117,13 @@ class _FlutterCalendarState extends State<FlutterCalendar> {
 
   @override
   void didUpdateWidget(FlutterCalendar oldWidget) {
-    _init();
+    _calenderBuilder.textStyle = widget.textStyle;
+    _calenderBuilder.style = widget.style;
+
+    if (_focusedDate != widget.focusedDate) {
+      _focusedDate = widget.focusedDate ?? today;
+    }
+
     super.didUpdateWidget(oldWidget);
   }
 

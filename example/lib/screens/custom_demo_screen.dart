@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 
-class CustomCalenderBuilder extends CalendarBuilder {
+class CustomCalendarBuilder extends CalendarBuilder {
   @override
   Widget buildRangeDay(DateTime dateTime) {
     return Container();
@@ -64,7 +64,7 @@ class CustomDemoScreen extends StatelessWidget {
       body: SafeArea(
         child: FlutterCalendar(
           selectionMode: CalendarSelectionMode.range,
-          calendarBuilder: CustomCalenderBuilder(),
+          calendarBuilder: CustomCalendarBuilder(),
           textStyle: const CalendarTextStyle(
             dayFontSize: 16,
             dayTextColor: Colors.blue,

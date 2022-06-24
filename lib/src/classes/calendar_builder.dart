@@ -6,7 +6,7 @@ import '../widgets/empty.dart';
 
 /// An abstract class for building a date widget on the calendar.
 ///
-/// If you want to customize the data widget,
+/// If you want to customize the date widget,
 /// inherit the class and implement it.
 ///
 /// See also:
@@ -15,6 +15,7 @@ abstract class CalendarBuilder {
   late CalendarStyle style;
   late CalendarTextStyle textStyle;
 
+  /// Method for building the navigation header of the calendar.
   Widget buildHeader(
     VoidCallback onLeftTap,
     VoidCallback onRightTap,
@@ -47,6 +48,12 @@ abstract class CalendarBuilder {
     );
   }
 
+  /// Build the date of the calendar. Widgets are placed in the Stack.
+  /// It's made up of three main types.
+  ///
+  /// 1. Lines marked when selecting a calendar range
+  /// 2. Date text for the calendar
+  /// 3. Event Display Marker
   Widget buildDate(
     DateTime dateTime,
     DateType type,

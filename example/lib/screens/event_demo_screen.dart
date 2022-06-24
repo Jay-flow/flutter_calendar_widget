@@ -28,7 +28,6 @@ class _EventDemoScreenState extends State<EventDemoScreen> {
           children: [
             FlutterCalendar(
               selectionMode: CalendarSelectionMode.single,
-              focusedDate: DateTime.now(),
               events: events,
               onDayPressed: (DateTime day) {
                 setState(() {
