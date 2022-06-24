@@ -5,7 +5,7 @@
 
 ![logo](./doc/logo.png)
 
-The flutter_calendar_widget is a flexible and freely changeable calendar of widgets.
+The flutter_calendar_widget is highly customizable calendar widget.
 
 Not only can you change the style, but you can also change the widget in the calendar, so you can customize it freely if you want.
 
