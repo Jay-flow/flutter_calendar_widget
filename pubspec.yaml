@@ -1,6 +1,6 @@
 name: flutter_calendar_widget
 description: Calendar widget for flutter. Highly customizable calendar widget.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/dooboolab/flutter_calendar_widget
 
 environment:
