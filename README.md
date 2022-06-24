@@ -3,7 +3,7 @@
 ![GitHub](https://img.shields.io/github/license/dooboolab/flutter_calendar_widget)
 ![Pub Version](https://img.shields.io/pub/v/flutter_calendar_widget)
 
-![logo](./doc/logo.png)
+![logo](https://raw.githubusercontent.com/dooboolab/flutter_calendar_widget/main/doc/logo.png)
 
 The flutter_calendar_widget is a flexible and freely changeable calendar of widgets.
 
@@ -41,7 +41,7 @@ Allows to select a single date, selecting a new date will remove the selection f
 
 #### Preview
 
-![single_demo](./doc/single_demo.gif)
+![single_demo](https://raw.githubusercontent.com/dooboolab/flutter_calendar_widget/main/doc/single_demo.gif)
 
 #### Example
 
@@ -60,7 +60,7 @@ Allows multiple date selection, selecting a new date will not remove the selecti
 
 #### Preview
 
-![multiple_demo](./doc/multiple_demo.gif)
+![multiple_demo](https://raw.githubusercontent.com/dooboolab/flutter_calendar_widget/main/doc/multiple_demo.gif)
 
 #### Example
 
@@ -79,7 +79,7 @@ FlutterCalendar(
 
 #### Preview
 
-![range_demo](./doc/range_demo.gif)
+![range_demo](https://raw.githubusercontent.com/dooboolab/flutter_calendar_widget/main/doc/range_demo.gif)
 
 #### Example
 
@@ -136,7 +136,7 @@ All widgets are built in the inheritance of the CalendarBuilder abstract class, 
 
 ### Preview
 
-![custom_demo](./doc/custom_demo.gif)
+![custom_demo](https://raw.githubusercontent.com/dooboolab/flutter_calendar_widget/main/doc/custom_demo.gif)
 
 ### Example
 
@@ -223,7 +223,7 @@ You can create an event and register it in the calendar.
 
 ### Preview
 
-![event_demo](./doc/event_demo.gif)
+![event_demo](https://raw.githubusercontent.com/dooboolab/flutter_calendar_widget/main/doc/event_demo.gif)
 
 ### Usages
 
